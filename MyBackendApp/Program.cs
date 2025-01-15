@@ -1,8 +1,14 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using DotNetEnv;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Carrega variáveis do arquivo .env
+DotNetEnv.Env.Load();
+// Configure o appsettings para usar variáveis de ambiente
+builder.Configuration.AddEnvironmentVariables();
 
 // Dependency injection (acessa ao appsettings.json)
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
