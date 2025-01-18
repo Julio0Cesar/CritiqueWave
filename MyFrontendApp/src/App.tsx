@@ -1,10 +1,15 @@
+import styles from './styles/Global.scss';
+
+import { useState, useEffect } from 'react';
+import { BrowserRouter, Navigate, HashRouter, Router, Route, Routes, Link} from 'react-router-dom';
+
 import React from 'react';
-import './App.scss';
 import axiosInstance from './config/axiosConfig.ts';
-import { BrowserRouter as Router, Route, Routes, Link} from 'react-router-dom';
-import CriarConta from './pages/CriarConta.tsx';
-import Navbar from './components/Navbar.tsx';
-import Home from './pages/Home.tsx';
+
+import CriarConta from './pages/criarConta/CriarConta.tsx';
+import Home from './pages/home/Home.tsx';
+import Login from './pages/login/Login.tsx';
+import Nav from './components/navbar/Nav.tsx';
 
 function App() {
 
@@ -21,15 +26,17 @@ function App() {
   }*/
   
   return (
-      <Router>
-        <Navbar/>
-        <div classname="App">
-          <Routes>
-            <Route path="/" element={<Home />}></Route>
-            <Route path="/criar-conta" element={<CriarConta />} />
-          </Routes>
-        </div>
-      </Router>
+    <div classname={styles.App}>
+      <BrowserRouter>
+      <Nav/>
+        <Routes>
+          <Route path='/' element={<Home/>} />
+          <Route path='/Login' element={<Login/>} />
+
+          <Route path='*' />
+        </Routes>
+      </BrowserRouter>
+    </div>
   );
 }
 

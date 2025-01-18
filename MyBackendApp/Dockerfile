@@ -1,5 +1,5 @@
 # Use a imagem base do .NET SDK para construir o projeto
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 
 # Defina o diretório de trabalho
 WORKDIR /app
@@ -11,7 +11,7 @@ COPY . .
 RUN dotnet publish -c Release -o out
 
 # Imagem base para execução da aplicação
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
+FROM mcr.microsoft.com/dotnet/aspnet:6.0
 
 # Defina o diretório de trabalho
 WORKDIR /app

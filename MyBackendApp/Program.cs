@@ -14,6 +14,10 @@ builder.Configuration.AddEnvironmentVariables();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddSingleton(new MyBackendApp.Services.DatabaseService(connectionString));
 
+// Testar a conexão com o banco de dados
+var databaseService = new MyBackendApp.Services.DatabaseService(connectionString);
+databaseService.TestarConexao(); // Verifica a conexão ao banco
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {

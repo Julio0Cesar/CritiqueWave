@@ -1,0 +1,38 @@
+*{
+    @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Abhaya+Libre&display=swap');
+    font-family: 'Roboto', sans-serif;
+    font-family: 'Abhaya Libre', serif;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+html{
+    scroll-behavior: smooth;
+}
+body{
+    background-color: #ffffff;
+    font-size: calc(10px + 2vmin);
+    color: rgb(49, 49, 49);
+}
+
+button{
+    background-color:  #6e83b1;
+    color: white;
+    border-radius: 5px;
+    width: 180px;
+    height: 43px;
+    cursor: pointer;               
+    transition: 0.5s;
+    border: none;
+    margin: 10px;
+    font-size: 20px;
+}
+button:hover{
+    transition: 0.5s;
+    transform: scale(1.05);
+}
+input{
+    padding: 10px;
+    font-size: 20px;
+}
