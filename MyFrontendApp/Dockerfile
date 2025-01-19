@@ -1,26 +1,26 @@
-# Use uma imagem base do Node.js
+# Imagem base do Node.js
 FROM node:18 AS build
 
-# Defina o diretório de trabalho
+# Diretório de trabalho
 WORKDIR /app
 
-# Copie os arquivos do projeto
+# Copia os arquivos do projeto
 COPY . .
 
-# Instale as dependências do React
+# Instala o React
 RUN npm install
 
-# Construa a aplicação
+# Construi a aplicação
 RUN npm run build
 
-# Use uma imagem base do Nginx para servir os arquivos estáticos
+# NGINX é um servidor web, apine é uma versão mais leve
 FROM nginx:alpine
 
-# Copie os arquivos construídos para o Nginx
+# Copia os arquivos construídos para o Nginx
 COPY --from=build /app/build /usr/share/nginx/html
 
-# Exponha a porta onde o frontend vai rodar
-EXPOSE 80
+# porta do frontend
+EXPOSE 3000
 
-# Comando para rodar o Nginx
+# Comando para rodar o Nginx em primeiro plano
 CMD ["nginx", "-g", "daemon off;"]

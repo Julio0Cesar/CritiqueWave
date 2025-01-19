@@ -1,34 +1,19 @@
-version: '3.8'
-
 services:
   backend:
     build:
-      context: ./backend
-    container_name: backend
+      context: ./MyBackendApp
+    container_name: my-backend-app
     ports:
-      - "5000:80"
-    depends_on:
-      - db
+      - "5218:5218"
     networks:
       - app-network
 
   frontend:
     build:
-      context: ./frontend
-    container_name: frontend
+      context: ./MyFrontendApp
+    container_name: my-frontend-app
     ports:
       - "3000:80"
-    networks:
-      - app-network
-
-  db:
-    image: mysql:8
-    container_name: db
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: mydb
-    ports:
-      - "3306:3306"
     networks:
       - app-network
 

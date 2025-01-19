@@ -4,6 +4,12 @@ Este documento lista as dependências do frontend e suas versões.
 
 ---
 
+# Comando
+
+npm list
+
+---
+
 ## Pacotes
 
 ### Dependências principais:

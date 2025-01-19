@@ -1,26 +1,27 @@
-# Use a imagem base do .NET SDK para construir o projeto
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+# Imagem base do .NET SDK para construir o projeto
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
-# Defina o diretório de trabalho
+# Diretório de trabalho
 WORKDIR /app
 
-# Copie os arquivos do projeto
+# Copia dos arquivos
 COPY . .
 
-# Publique a aplicação
-RUN dotnet publish -c Release -o out
+# versão otimizada do app e publica no diretorio out
+# especificando a pasta do projeto para não incluir o MyBackendAppTest
+RUN dotnet publish MyBackendApp.csproj -c Release -o out
 
 # Imagem base para execução da aplicação
-FROM mcr.microsoft.com/dotnet/aspnet:6.0
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
 
-# Defina o diretório de trabalho
+# Diretório de trabalho
 WORKDIR /app
 
-# Copie os arquivos compilados da imagem de build
+# Copia dos arquivos compilados da imagem de build
 COPY --from=build /app/out .
 
-# Exponha a porta que o seu backend vai rodar
-EXPOSE 80
+# porta do back
+EXPOSE 5218
 
-# Comando para rodar a aplicação
-ENTRYPOINT ["dotnet", "SeuProjeto.dll"]
+# Comando para rodar o app
+ENTRYPOINT ["dotnet", "MyBackendApp.dll"]

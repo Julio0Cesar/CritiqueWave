@@ -4,6 +4,12 @@ Este documento lista as dependências do backend e suas versões, juntamente com
 
 ---
 
+# Comando
+
+dotnet list package
+
+---
+
 ## Pacotes
 
 | Nome do Pacote                                     | Versão  | Descrição                                                                   |
