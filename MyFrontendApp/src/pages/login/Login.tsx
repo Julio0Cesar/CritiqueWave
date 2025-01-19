@@ -1,6 +1,6 @@
 import styles from './Login.module.scss'
-import { Link } from 'react-router-dom'
-import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom'
+import { useState } from 'react';
 
 const Login = () => {
     const [formData, setFormData] = useState({
@@ -11,7 +11,7 @@ const Login = () => {
         dataNascimento: '',
     })
 
-    const handleChange = (e) => {
+    const handleChange = (e: { target: { name: any; value: any; }; }) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
             ...prevData,
@@ -19,7 +19,7 @@ const Login = () => {
         }));
     };
 
-    const handleSubmit = async (e) =>{
+    const handleSubmit = async (e: { preventDefault: () => void; }) =>{
         e.preventDefault(); // Previne o reload da pagina
         console.log(formData);
         try {
@@ -42,23 +42,24 @@ const Login = () => {
         }
     }
     return(
-        <div>
+        <div className={styles.container}>
             <form onSubmit={handleSubmit} className={styles.form}>
-          <h1>Login</h1>
-          <label>
-              Name:
+            <h2><Link to='/'><a>Retorne</a></Link></h2>
+          <label className={styles.label}>
+              <h3>Nome:</h3> 
               <input 
                   type='text'
                   name='nome'
                   autoComplete='off'
                   required
-                  placeholder='Name'
+                  placeholder='Nome'
                   value={formData.nome}
                   onChange={handleChange}
               />
           </label>  
-          <label>
-              E-mail: 
+          <label className={styles.label}>
+            <h3>E-mail: </h3>
+              
               <input 
                 type='email'
                 name='email'
@@ -68,20 +69,20 @@ const Login = () => {
                   onChange={handleChange}
               />
           </label>
-          <label>
-              Password:
+          <label className={styles.label}>
+              <h3>Senha:</h3> 
               <input 
                   type='password'
                   name='senha'
                   autoComplete='off'
                   required
-                  placeholder='Password'
+                  placeholder='Senha'
                   value={formData.senha}
                   onChange={handleChange}
               />
           </label>     
-          <label>
-              CPF:
+          <label className={styles.label}>
+              <h3>CPF:</h3> 
               <input 
                   type='text'
                   name='cpf'
@@ -92,8 +93,8 @@ const Login = () => {
                   onChange={handleChange}
               />
           </label>    
-          <label>
-              Data de nascimento:
+          <label className={styles.label}>
+              <h3>Data de nascimento:</h3> 
               <input 
                   type='date'
                   name='dataNascimento'
@@ -105,7 +106,8 @@ const Login = () => {
               />
           </label>  
           <button type="submit">Submit</button>
-          <p>Create your Account <Link to='/'>Here</Link></p>
+          <div className={styles.br}></div>
+          <p>ou faça o login <Link to='/Login'><a>aqui</a></Link></p>
         </form>
         </div>
     );

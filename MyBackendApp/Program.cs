@@ -7,13 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.ListenAnyIP(5218); // Escuta na porta 80 dentro do container
+    options.ListenAnyIP(5218); // Escuta na porta 5218 dentro do container
 });
-
-// Carrega variáveis do arquivo .env
-DotNetEnv.Env.Load();
-// Configure o appsettings para usar variáveis de ambiente
-builder.Configuration.AddEnvironmentVariables();
 
 // Dependency injection (acessa ao appsettings.json)
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");

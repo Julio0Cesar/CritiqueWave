@@ -3,13 +3,12 @@ import styles from './styles/Global.scss';
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Navigate, HashRouter, Router, Route, Routes, Link} from 'react-router-dom';
 
-import React from 'react';
-import axiosInstance from './config/axiosConfig.ts';
+import axiosInstance from './config/axiosConfig';
 
-import CriarConta from './pages/criarConta/CriarConta.tsx';
-import Home from './pages/home/Home.tsx';
-import Login from './pages/login/Login.tsx';
-import Nav from './components/navbar/Nav.tsx';
+import CriarConta from './pages/criarConta/CriarConta';
+import Home from './pages/home/Home';
+import Login from './pages/login/Login';
+import Nav from './components/navbar/Nav';
 
 function App() {
 
@@ -26,7 +25,7 @@ function App() {
   }*/
   
   return (
-    <div classname={styles.App}>
+    <div className={styles.App}>
       <BrowserRouter>
       <Nav/>
         <Routes>
