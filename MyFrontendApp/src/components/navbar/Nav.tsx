@@ -5,7 +5,10 @@ import styles from './Nav.module.scss'
 const Nav = () => {
   const location = useLocation()
 
-  if (location.pathname === '/Login'){
+  if (location.pathname === '/CriarConta'){
+    return null
+  }
+  if (location.pathname === '/Entrar'){
     return null
   }
 
@@ -19,9 +22,12 @@ const Nav = () => {
         </div>
         <div className={styles.navListItems}>
           <ul>
-            <li><NavLink to='/Login' 
+            <li><NavLink to='/CriarConta' 
             className={({ isActive }) => (isActive ? styles.active : "")}
-            >Login</NavLink></li>
+            >Criar Conta</NavLink></li>
+            <li><NavLink to='/Entrar' 
+            className={({ isActive }) => (isActive ? styles.active : "")}
+            >Entrar</NavLink></li>
             <li><NavLink to='/About' 
             className={({ isActive }) => (isActive ? styles.active : "")}
             >About</NavLink></li>

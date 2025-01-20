@@ -5,9 +5,9 @@ import { BrowserRouter, Navigate, HashRouter, Router, Route, Routes, Link} from 
 
 import axiosInstance from './config/axiosConfig';
 
-import CriarConta from './pages/criarConta/CriarConta';
-import Home from './pages/home/Home';
 import Login from './pages/login/Login';
+import Home from './pages/home/Home';
+import CriarConta from './pages/criarConta/CriarConta';
 import Nav from './components/navbar/Nav';
 
 function App() {
@@ -30,7 +30,8 @@ function App() {
       <Nav/>
         <Routes>
           <Route path='/' element={<Home/>} />
-          <Route path='/Login' element={<Login/>} />
+          <Route path='/CriarConta' element={<CriarConta/>} />
+          <Route path='/Entrar' element={<Login />} />
 
           <Route path='*' />
         </Routes>
