@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using System.Security.Claims;
 using MyBackendApp.Models;
+using MyBackendApp.Services;
 
 namespace MyBackendApp.Controllers
 {
@@ -12,34 +13,40 @@ namespace MyBackendApp.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IConfiguration _configuration;
+        private readonly DatabaseService _databaseService;
 
-        public AuthController(IConfiguration configuration)
+        public AuthController(IConfiguration configuration, DatabaseService databaseService)
         {
             _configuration = configuration;
+            _databaseService = databaseService;
         }
 
         [HttpPost("login")]
         public IActionResult Login([FromBody] UserLoginDto userLogin)
         {
-            if (userLogin.Username != "usuarioTeste" || userLogin.Password != "senhaTeste")
+
+            var usuario = _databaseService.ObterUsuarioPorEmail(userLogin.EmailDTO);
+
+            if (usuario == null) {return Unauthorized(new {Message = "Usuario não encontrado"});}
+            if (usuario.SenhaHash != userLogin.SenhaDTO)
             {
-                return Unauthorized();
+                return Unauthorized(new { Message = "Credenciias invalidas"});
             }
 
-            var token = GenerateJwtToken(userLogin.Username);
+            var token = GenerateJwtToken(usuario);
 
             return Ok(new { token });
         }
 
-        private string GenerateJwtToken(string username)
+        private string GenerateJwtToken(Usuario usuario)
         {
             var claims = new[]
             {
-                new Claim(ClaimTypes.Name, username)
+                new Claim(ClaimTypes.Name, usuario.Email),
+                new Claim(ClaimTypes.NameIdentifier, usuario.Cpf)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(

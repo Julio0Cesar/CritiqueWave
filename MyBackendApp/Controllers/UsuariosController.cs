@@ -1,10 +1,11 @@
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc; //funcionalidades ASP.NET
-using MyBackendApp.Models; //importa o nasmespace Models
+using Microsoft.AspNetCore.Mvc;
+using MyBackendApp.Models;
 using MyBackendApp.Services;
 
 namespace MyBackendApp.Controllers
-{
+{   
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UsuariosController : ControllerBase
@@ -17,7 +18,6 @@ namespace MyBackendApp.Controllers
         }
 
         //GET: api/usuarios
-        //[Authorize]
         [HttpGet]
         public IActionResult ObterUsuarios()
         {

@@ -13,6 +13,43 @@ namespace MyBackendApp.Services
             _connectionString = connectionString;
         }
 
+        //Método para obter usuário pelo E-mail
+        public Usuario ObterUsuarioPorEmail(string email)
+        {
+            try
+            {
+                using var connection = new MySqlConnection(_connectionString);
+                connection.Open();
+
+                var query = "SELECT * FROM usuario WHERE email = @email";
+
+                using var cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@email", email);
+
+                using var reader = cmd.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    var usuario = new Usuario
+                    {
+                        Nome = reader["nome"].ToString(),
+                        Cpf = reader["cpf"].ToString(),
+                        Email = reader["email"].ToString(),
+                        SenhaHash = reader["senha"].ToString(),
+                        DataNascimento = DateTime.Parse(reader["data_nascimento"].ToString())
+                    };
+                    return usuario;
+                }
+
+                return null;
+            }
+            catch (System.Exception)
+            {
+                
+                return null;
+            }
+        }
+
         // Método para obter todos os usuários do banco de dados
         public List<Usuario> ObterUsuariosDoBanco()
         {
@@ -35,7 +72,7 @@ namespace MyBackendApp.Services
                         Nome = reader["nome"].ToString(),
                         Cpf = reader["cpf"].ToString(),
                         Email = reader["email"].ToString(),
-                        Senha = reader["senha"].ToString(),
+                        SenhaHash = reader["senha"].ToString(),
                         DataNascimento = DateTime.Parse(reader["data_nascimento"].ToString())
                     };
                     usuarios.Add(usuario);
@@ -63,7 +100,7 @@ namespace MyBackendApp.Services
                 cmd.Parameters.AddWithValue("@nome", usuario.Nome);
                 cmd.Parameters.AddWithValue("@cpf", usuario.Cpf);
                 cmd.Parameters.AddWithValue("@email", usuario.Email);
-                cmd.Parameters.AddWithValue("@senha", usuario.Senha);
+                cmd.Parameters.AddWithValue("@senha", usuario.SenhaHash);
                 cmd.Parameters.AddWithValue("@data_nascimento", usuario.DataNascimento);
 
                 cmd.ExecuteNonQuery();
@@ -107,7 +144,7 @@ namespace MyBackendApp.Services
                 cmd.Parameters.AddWithValue("@nome", usuario.Nome);
                 cmd.Parameters.AddWithValue("@cpf", usuario.Cpf);
                 cmd.Parameters.AddWithValue("@email", usuario.Email);
-                cmd.Parameters.AddWithValue("@senha", usuario.Senha);
+                cmd.Parameters.AddWithValue("@senha", usuario.SenhaHash);
                 cmd.Parameters.AddWithValue("@data_nascimento", usuario.DataNascimento);
 
                 var rowsAffected = cmd.ExecuteNonQuery();

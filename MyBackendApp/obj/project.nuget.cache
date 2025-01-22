@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "+bXMFxRBeV045DGZDAJ/0Bq225dSkLWQilgHH8QJB/Ard9JMyvsvEhXDPBekptb/rQgo6lfr/vbJ0eyI+yKCjw==",
+  "dgSpecHash": "xZ67NOY8ZNdLnTqGYB2vBcOnVpLMntHbsDHnO6U0yeiJR1C6hCzw7j0Ezk/jpZ8e1xuKqacdpX7nGrrLNSUuqg==",
   "success": true,
   "projectFilePath": "/home/kintiz/Desktop/Teste/MySolution/MyBackendApp/MyBackendApp.csproj",
   "expectedPackageFiles": [
@@ -53,6 +53,7 @@
     "/home/kintiz/.nuget/packages/system.buffers/4.5.1/system.buffers.4.5.1.nupkg.sha512",
     "/home/kintiz/.nuget/packages/system.collections/4.3.0/system.collections.4.3.0.nupkg.sha512",
     "/home/kintiz/.nuget/packages/system.collections.concurrent/4.3.0/system.collections.concurrent.4.3.0.nupkg.sha512",
+    "/home/kintiz/.nuget/packages/system.componentmodel.annotations/5.0.0/system.componentmodel.annotations.5.0.0.nupkg.sha512",
     "/home/kintiz/.nuget/packages/system.configuration.configurationmanager/8.0.0/system.configuration.configurationmanager.8.0.0.nupkg.sha512",
     "/home/kintiz/.nuget/packages/system.console/4.3.0/system.console.4.3.0.nupkg.sha512",
     "/home/kintiz/.nuget/packages/system.diagnostics.debug/4.3.0/system.diagnostics.debug.4.3.0.nupkg.sha512",
