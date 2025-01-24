@@ -21,7 +21,7 @@ namespace MyBackendApp.Controllers
         [HttpGet]
         public IActionResult ObterUsuarios()
         {
-            var usuarios = _databaseService.ObterUsuariosDoBanco(); // Agora, chama o método do service
+            var usuarios = _databaseService.ObterUsuarioDoBanco(); // Agora, chama o método do service
 
             if (usuarios == null)
             {
@@ -32,18 +32,23 @@ namespace MyBackendApp.Controllers
         }
 
         //POST: api/usuarios
-        [HttpPost]
+        [HttpPost("criar")]
+        [AllowAnonymous]
         public IActionResult CriarUsuario([FromBody] Usuario usuario)
         {
-            if (usuario == null){
+            if (usuario == null)
                 return BadRequest("Usuário não pode ser nulo");
-            }
+            
+            //if (usuario.DataNascimento == default(DateTime))
+            //    return BadRequest("Data de nascimento inválida.");
+            
+            var usuarioExistente = _databaseService.ObterUsuarioPorCpfOuEmail(usuario.Cpf, usuario.Email);
+            if(usuarioExistente != null)
+                return BadRequest("Já esxite um usuário com o mesmo CPF ou e-mail");
 
-            bool usuarioCriado = _databaseService.CriarUsuarioNoBanco(usuario);
-
-            if (!usuarioCriado){
+            if (!_databaseService.CriarUsuarioNoBanco(usuario))
                 return StatusCode(500, "Erro ao criar usuário no banco de dados.");
-            }   
+            
             
             return Ok(new {Message = "Usuário criado com sucesso", Usuario = usuario});
         }

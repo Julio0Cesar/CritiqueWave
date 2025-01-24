@@ -35,7 +35,7 @@ namespace MyBackendApp.Controllers
 
             var token = GenerateJwtToken(usuario);
 
-            return Ok(new { token });
+            return Ok(new { usuario, token });
         }
 
         private string GenerateJwtToken(Usuario usuario)

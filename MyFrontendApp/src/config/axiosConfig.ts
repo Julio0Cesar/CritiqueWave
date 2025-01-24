@@ -1,10 +1,11 @@
-import axios from 'axios';
+import axios from 'axios';//biblioteca para fazer GET,POST,PUT,DELETE
+
+const API_URL = "http://localhost:5218/api/"
 
 const axiosInstance = axios.create({
-    baseURL: 'http://localhost:5218',
+    baseURL: API_URL,
     headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
     }
     
 });

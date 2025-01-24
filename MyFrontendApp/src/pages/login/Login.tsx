@@ -1,40 +1,30 @@
 import { useState } from "react";
 import styles from "./Login.module.scss";
-import { Link } from "react-router-dom";
-import { login } from "../../services/authService";
+import { Link, useNavigate } from "react-router-dom";
+import { autenticaUser } from "../../services/autenticaUserService";
 
 const Login = () => {
 
   const [formData, setFormData] = useState ({
     email:'',
-    senha:'',
-    message:'',
+    senha:''
   })
+  const navigate = useNavigate()
 
   const handleLogin = async (e: { preventDefault: () => void; }) => {
     e.preventDefault()
   
-    console.log("Token armazenado no localStorage:", localStorage.getItem('token'));
-  
-    // Verificando se formData é um objeto válido
-    if (typeof formData === 'object' && formData !== null) {
-      // Converte para JSON e loga a string JSON
-      const jsonString = JSON.stringify(formData);
-      console.log("formData convertido para JSON:", jsonString);
-    } else {
-      console.error("formData não é um objeto válido.");
-    }
-  
     try {
-      const response = await login({ email: formData.email, senha: formData.senha });
+      const response = await autenticaUser(formData.email, formData.senha)
+      console.log("Usuário:", response)
       localStorage.setItem("token", response.token);
-      setFormData((prev) => ({ ...prev, message: 'login realizado com sucesso' }));
+      
+      navigate("/")
     } catch (error) {
-      console.error("Erro ao tentar fazer login:", error);
-      setFormData((prev) => ({ ...prev, message: 'Email ou senha inválidos' }));
+      console.error("Erro ao autenticar", error)
     }
   }
-  
+
 
   const handleChange = (e: {target: {name:any; value:any;}}) =>{
     const {name,value} = e.target

@@ -1,45 +1,45 @@
 import styles from './CriarConta.module.scss'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useState } from 'react';
+import { criaUser } from '../../services/criaUserService';
 
 const CriarConta = () => {
     const [formData, setFormData] = useState({
         nome: '',
+        cpf: '',
         email: '',
         senha: '',
-        cpf: '',
         dataNascimento: '',
     })
+    const navigate = useNavigate()
 
     const handleChange = (e: { target: { name: any; value: any; }; }) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
             ...prevData,
             [name]: value,
-        }));
-    };
+        }))
+    }
 
     const handleSubmit = async (e: { preventDefault: () => void; }) =>{
         e.preventDefault(); // Previne o reload da pagina
-        console.log(formData);
+        
         try {
-            const response = await fetch('http://localhost:5218/api/usuarios', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            })
-            if (response.ok){
-                const data = await response.json()
-                alert('Usuário criado com sucesso!');
-                console.log(data);
-            } else {
-                alert('Erro ao criar o usuário')
-            }
+            const response = await criaUser(
+                formData.nome, 
+                formData.cpf, 
+                formData.email, 
+                formData.senha, 
+                formData.dataNascimento
+            )
+            console.log("Usuario:", response)
+            localStorage.setItem("token", response.token);
+
+            navigate("/")
         } catch (error) {
             console.error('Erro:', error)
         }
+
     }
     return(
         <div className={styles.container}>

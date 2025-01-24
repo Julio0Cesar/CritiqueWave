@@ -13,6 +13,44 @@ namespace MyBackendApp.Services
             _connectionString = connectionString;
         }
 
+        //Método para verificar usuários pelo CPF ou Email
+        public Usuario ObterUsuarioPorCpfOuEmail(string cpf, string email){
+            try
+            {
+                using var connection = new MySqlConnection(_connectionString);
+                connection.Open();
+
+                var query = "SELECT * FROM usuario WHERE Cpf = @cpf OR Email = @email LIMIT 1";
+
+                using var cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@email", email);
+                cmd.Parameters.AddWithValue("@cpf", cpf);
+
+                using var reader = cmd.ExecuteReader();
+
+                if(reader.Read())
+                {
+                    var usuario = new Usuario
+                    {
+                        Id = Convert.ToInt32(reader["id"].ToString()),
+                        Nome = reader["nome"].ToString(),
+                        Cpf = reader["cpf"].ToString(),
+                        Email = reader["email"].ToString(),
+                        SenhaHash = reader["senha"].ToString(),
+                        DataNascimento = DateTime.Parse(reader["data_nascimento"].ToString())
+                    };
+                    return usuario;
+                }
+                return null;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao consultar o usuário no banco: ", ex);
+            }
+            
+        }
+
         //Método para obter usuário pelo E-mail
         public Usuario ObterUsuarioPorEmail(string email)
         {
@@ -32,6 +70,7 @@ namespace MyBackendApp.Services
                 {
                     var usuario = new Usuario
                     {
+                        Id = Convert.ToInt32(reader["id"].ToString()),
                         Nome = reader["nome"].ToString(),
                         Cpf = reader["cpf"].ToString(),
                         Email = reader["email"].ToString(),
@@ -51,7 +90,7 @@ namespace MyBackendApp.Services
         }
 
         // Método para obter todos os usuários do banco de dados
-        public List<Usuario> ObterUsuariosDoBanco()
+        public List<Usuario> ObterUsuarioDoBanco()
         {
             try
             {
