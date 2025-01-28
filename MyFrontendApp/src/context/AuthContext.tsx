@@ -3,15 +3,14 @@ import { useNavigate } from "react-router-dom";
 
 interface AuthContextType {
   user: any; // Pode definir uma interface para o usuário mais tarde
-  login: (token: string) => void;
-  logout: () => void;
+  storeToken: (token: string) => void;
+  clearToken: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<string | null>(localStorage.getItem("token"));
-  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -20,20 +19,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, []);
 
-  const login = (token: string) => {
+  const storeToken = (token: string) => {
     localStorage.setItem("token", token);
     setUser(token);
-    navigate("/");
   };
 
-  const logout = () => {
+  const clearToken = () => {
     localStorage.removeItem("token");
     setUser(null);
-    navigate("/");
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, storeToken, clearToken }}>
       {children}
     </AuthContext.Provider>
   );

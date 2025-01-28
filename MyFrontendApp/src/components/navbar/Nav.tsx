@@ -1,26 +1,15 @@
 import { useEffect, useState } from 'react'
-import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 import styles from './Nav.module.scss'
+import { useAuth } from '../../context/AuthContext';
 
 const Nav = () => {
   const location = useLocation()
-  const [user, setUser] = useState(null)
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    const loggedInUser = JSON.parse(localStorage.getItem('user') || 'null')
-    setUser(loggedInUser)
-  }, [])
+  const {user} = useAuth()
 
   if (location.pathname === '/CriarConta' || location.pathname === '/Entrar'){
     return null
   }
-
-  const handleLogout = () => {
-    setUser(null);
-    localStorage.removeItem('user');
-    navigate("/Login")
-  };
   
 
   return (
@@ -36,18 +25,9 @@ const Nav = () => {
             {user ? (
               <>
                 <li>
-                  <span>ID: 10</span>
-                </li>
-                <li>
                   <NavLink to='/Perfil' 
                   className={({ isActive }) => (isActive ? styles.active : '')}>
                     Perfil
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to='/Logout' onClick={handleLogout}
-                  className={({ isActive }) => (isActive ? styles.active : '')}>
-                    Logout
                   </NavLink>
                 </li>
               </>

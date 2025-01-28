@@ -2,24 +2,25 @@ import { useState } from "react";
 import styles from "./Login.module.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { autenticaUser } from "../../services/autenticaUserService";
+import { useAuth } from "../../context/AuthContext";
 
 const Login = () => {
 
+  const {storeToken} = useAuth()
   const [formData, setFormData] = useState ({
     email:'',
     senha:''
   })
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleLogin = async (e: { preventDefault: () => void; }) => {
     e.preventDefault()
   
     try {
       const response = await autenticaUser(formData.email, formData.senha)
-      console.log("Usuário:", response)
-      localStorage.setItem("token", response.token);
+      storeToken(response.token)
+      navigate("/");
       
-      navigate("/")
     } catch (error) {
       console.error("Erro ao autenticar", error)
     }

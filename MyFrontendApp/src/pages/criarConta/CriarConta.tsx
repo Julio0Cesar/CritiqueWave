@@ -109,7 +109,7 @@ const CriarConta = () => {
             <button type="submit">Criar Conta</button>
             <div className={styles.br}>
             </div>
-            <p>ou faça o login <Link to='/Login'><a>aqui</a></Link></p>
+            <p>ou faça o login <Link to='/Entrar'><a>aqui</a></Link></p>
           </div>
         </form>
         </div>
