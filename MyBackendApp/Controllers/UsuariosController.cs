@@ -31,6 +31,24 @@ namespace MyBackendApp.Controllers
             return Ok(usuarios);
         }
 
+        //GET: api/usuarios/me
+        [HttpGet("me")]
+        public async Task<IActionResult> ObterUsuarioPeloId()
+        {
+            var userId = int.Parse(User.FindFirst("sub")?.Value);
+            var user = _databaseService.ObterUsuarioPeloId(userId.ToString());  
+            if (user == null) 
+                return NotFound("Usuário não encontrado");
+            
+            return Ok(new {
+                user.Id,
+                user.Nome
+            });
+        }
+
+
+
+
         //POST: api/usuarios
         [HttpPost("criar")]
         [AllowAnonymous]

@@ -19,6 +19,7 @@ const Login = () => {
     try {
       const response = await autenticaUser(formData.email, formData.senha)
       storeToken(response.token)
+      console.log(response.token)
       navigate("/");
       
     } catch (error) {

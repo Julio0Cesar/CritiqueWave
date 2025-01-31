@@ -10,6 +10,6 @@ export const getUserData = async (token: string) => {
         return response.data
     } catch (error: any) {
         console.error("Erro:", error.response?.data?.message || error.message)
-        error
+        throw error
     }
 }

@@ -13,6 +13,44 @@ namespace MyBackendApp.Services
             _connectionString = connectionString;
         }
 
+        //Método para obter usuário pelo ID
+        public Usuario ObterUsuarioPeloId(string email)
+        {
+            try
+            {
+                using var connection = new MySqlConnection(_connectionString);
+                connection.Open();
+
+                var query = "SELECT * FROM usuario WHERE id = @id";
+
+                using var cmd = new MySqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@id", email);
+
+                using var reader = cmd.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    var usuario = new Usuario
+                    {
+                        Id = Convert.ToInt32(reader["id"].ToString()),
+                        Nome = reader["nome"].ToString(),
+                        Cpf = reader["cpf"].ToString(),
+                        Email = reader["email"].ToString(),
+                        SenhaHash = reader["senha"].ToString(),
+                        DataNascimento = DateTime.Parse(reader["data_nascimento"].ToString())
+                    };
+                    return usuario;
+                }
+
+                return null;
+            }
+            catch (System.Exception)
+            {
+                
+                return null;
+            }
+        }
+
         //Método para verificar usuários pelo CPF ou Email
         public Usuario ObterUsuarioPorCpfOuEmail(string cpf, string email){
             try
