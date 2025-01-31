@@ -22,16 +22,15 @@ namespace MyBackendApp.Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] UserLoginDto userLogin)
+        public async Task<IActionResult> Login([FromBody] UserLoginDto userLogin)
         {
+            var usuario = await _databaseService.ObterUsuarioPorEmail(userLogin.EmailDTO);
 
-            var usuario = _databaseService.ObterUsuarioPorEmail(userLogin.EmailDTO);
+            if (usuario == null)
+                return Unauthorized(new { Message = "Usuário não encontrado" });
 
-            if (usuario == null) {return Unauthorized(new {Message = "Usuario não encontrado"});}
             if (usuario.SenhaHash != userLogin.SenhaDTO)
-            {
-                return Unauthorized(new { Message = "Credenciias invalidas"});
-            }
+                return Unauthorized(new { Message = "Credenciais inválidas" });
 
             var token = GenerateJwtToken(usuario);
 
@@ -56,7 +55,7 @@ namespace MyBackendApp.Controllers
                 expires: DateTime.UtcNow.AddHours(3),
                 signingCredentials: creds
             );
-
+            
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }

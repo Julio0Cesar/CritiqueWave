@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyBackendApp.Models;
 using MyBackendApp.Services;
+using MyBackendApp.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace MyBackendApp.Controllers
 {   
@@ -10,97 +12,82 @@ namespace MyBackendApp.Controllers
     [ApiController]
     public class UsuariosController : ControllerBase
     {
-        private readonly DatabaseService _databaseService;
+        private readonly ApplicationDbContext _context;
 
-        public UsuariosController(DatabaseService databaseService)
+        public UsuariosController(ApplicationDbContext context)
         {
-            _databaseService = databaseService;
+            _context = context;
         }
 
         //GET: api/usuarios
         [HttpGet]
-        public IActionResult ObterUsuarios()
+        public async Task<IActionResult> ObterUsuarios()
         {
-            var usuarios = _databaseService.ObterUsuarioDoBanco(); // Agora, chama o método do service
-
-            if (usuarios == null)
-            {
-                return StatusCode(500, "Erro ao obter usuários do banco de dados.");
-            }
-
+            var usuarios = await _context.Usuarios.ToListAsync();
             return Ok(usuarios);
         }
+
 
         //GET: api/usuarios/me
         [HttpGet("me")]
         public async Task<IActionResult> ObterUsuarioPeloId()
         {
             var userId = int.Parse(User.FindFirst("sub")?.Value);
-            var user = _databaseService.ObterUsuarioPeloId(userId.ToString());  
+            var user = await _context.Usuarios.FindAsync(userId);
             if (user == null) 
                 return NotFound("Usuário não encontrado");
-            
-            return Ok(new {
-                user.Id,
-                user.Nome
-            });
+            return Ok(user);
         }
-
-
-
 
         //POST: api/usuarios
         [HttpPost("criar")]
         [AllowAnonymous]
-        public IActionResult CriarUsuario([FromBody] Usuario usuario)
+        public async Task<IActionResult> CriarUsuario([FromBody] Usuario usuario)
         {
             if (usuario == null)
                 return BadRequest("Usuário não pode ser nulo");
-            
-            //if (usuario.DataNascimento == default(DateTime))
-            //    return BadRequest("Data de nascimento inválida.");
-            
-            var usuarioExistente = _databaseService.ObterUsuarioPorCpfOuEmail(usuario.Cpf, usuario.Email);
-            if(usuarioExistente != null)
-                return BadRequest("Já esxite um usuário com o mesmo CPF ou e-mail");
 
-            if (!_databaseService.CriarUsuarioNoBanco(usuario))
-                return StatusCode(500, "Erro ao criar usuário no banco de dados.");
-            
-            
-            return Ok(new {Message = "Usuário criado com sucesso", Usuario = usuario});
+            var usuarioExistente = await _context.Usuarios
+                .FirstOrDefaultAsync(u => u.Cpf == usuario.Cpf || u.Email == usuario.Email);
+
+            if (usuarioExistente != null)
+                return BadRequest("Já existe um usuário com o mesmo CPF ou e-mail");
+
+            _context.Usuarios.Add(usuario);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { Message = "Usuário criado com sucesso", Usuario = usuario });
         }
 
         //PUT: api/usuarios/atualizar-usuario
         [HttpPut("atualizar-usuario")]
-        public IActionResult AtualizarUsuario([FromBody] Usuario usuario)
+        public async Task<IActionResult> AtualizarUsuario([FromBody] Usuario usuario)
         {
-            bool sucesso = _databaseService.AtualizarUsuarioNoBanco(usuario);
+            var usuarioExistente = await _context.Usuarios.FindAsync(usuario.Id);
 
-            if (sucesso)
-            {
-                return Ok("Usuário atualizado com sucesso!");
-            }
-            else
-            {
-                return StatusCode(500, "Erro ao atualizar o usuário.");
-            }
+            if (usuarioExistente == null)
+                return NotFound("Usuário não encontrado");
+
+            usuarioExistente.Nome = usuario.Nome; // Exemplo de atualização de um campo
+            _context.Usuarios.Update(usuarioExistente);
+            await _context.SaveChangesAsync();
+
+            return Ok("Usuário atualizado com sucesso!");
         }
     
         //DELETE: api/usuarios/excluir-usuario
-        [HttpDelete("excluir-usuario/{cpf}")]
-        public IActionResult ExcluirUsuario(string cpf)
+        [HttpDelete("excluir-usuario/{id}")]
+        public async Task<IActionResult> ExcluirUsuario(int id)
         {
-            bool sucesso = _databaseService.ExcluirUsuarioDoBanco(cpf);
+            var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.Id == id);
 
-            if (sucesso)
-            {
-                return Ok("Usuário excluído com sucesso!");
-            }
-            else
-            {
-                return StatusCode(500, "Erro ao excluir o usuário.");
-            }
+            if (usuario == null)
+                return NotFound("Usuário não encontrado");
+
+            _context.Usuarios.Remove(usuario);
+            await _context.SaveChangesAsync();
+
+            return Ok("Usuário excluído com sucesso!");
         }
 
     }

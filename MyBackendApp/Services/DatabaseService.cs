@@ -1,262 +1,86 @@
-using MySql.Data.MySqlClient;
 using MyBackendApp.Models;
+using MyBackendApp.Data;
+using Microsoft.EntityFrameworkCore;
+using MySql.Data.MySqlClient;
 
 namespace MyBackendApp.Services
 {
     public class DatabaseService
     {
         //_connectionString acessa ao appsettings.json para saber as informações do banco
-        private readonly string _connectionString;
+        private readonly ApplicationDbContext _context;
 
         //Construtor que recebe a string de conexão
-        public DatabaseService(string connectionString){
-            _connectionString = connectionString;
+        public DatabaseService(ApplicationDbContext context){
+            _context = context;
         }
 
         //Método para obter usuário pelo ID
-        public Usuario ObterUsuarioPeloId(string email)
+        public Usuario ObterUsuarioPeloId(string id)
         {
-            try
-            {
-                using var connection = new MySqlConnection(_connectionString);
-                connection.Open();
-
-                var query = "SELECT * FROM usuario WHERE id = @id";
-
-                using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@id", email);
-
-                using var reader = cmd.ExecuteReader();
-
-                if (reader.Read())
-                {
-                    var usuario = new Usuario
-                    {
-                        Id = Convert.ToInt32(reader["id"].ToString()),
-                        Nome = reader["nome"].ToString(),
-                        Cpf = reader["cpf"].ToString(),
-                        Email = reader["email"].ToString(),
-                        SenhaHash = reader["senha"].ToString(),
-                        DataNascimento = DateTime.Parse(reader["data_nascimento"].ToString())
-                    };
-                    return usuario;
-                }
-
-                return null;
-            }
-            catch (System.Exception)
-            {
-                
-                return null;
-            }
+            return _context.Usuarios.Find(id);
         }
 
         //Método para verificar usuários pelo CPF ou Email
-        public Usuario ObterUsuarioPorCpfOuEmail(string cpf, string email){
-            try
-            {
-                using var connection = new MySqlConnection(_connectionString);
-                connection.Open();
-
-                var query = "SELECT * FROM usuario WHERE Cpf = @cpf OR Email = @email LIMIT 1";
-
-                using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@email", email);
-                cmd.Parameters.AddWithValue("@cpf", cpf);
-
-                using var reader = cmd.ExecuteReader();
-
-                if(reader.Read())
-                {
-                    var usuario = new Usuario
-                    {
-                        Id = Convert.ToInt32(reader["id"].ToString()),
-                        Nome = reader["nome"].ToString(),
-                        Cpf = reader["cpf"].ToString(),
-                        Email = reader["email"].ToString(),
-                        SenhaHash = reader["senha"].ToString(),
-                        DataNascimento = DateTime.Parse(reader["data_nascimento"].ToString())
-                    };
-                    return usuario;
-                }
-                return null;
-
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Erro ao consultar o usuário no banco: ", ex);
-            }
+        public Usuario ObterUsuarioPorCpfOuEmail(string cpf, string email)
+        {
+            return _context.Usuarios.FirstOrDefault(u => u.Cpf == cpf || u.Email == email);
             
         }
 
         //Método para obter usuário pelo E-mail
-        public Usuario ObterUsuarioPorEmail(string email)
+        public async Task<Usuario> ObterUsuarioPorEmail(string email)
         {
-            try
-            {
-                using var connection = new MySqlConnection(_connectionString);
-                connection.Open();
+            return await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == email);
 
-                var query = "SELECT * FROM usuario WHERE email = @email";
-
-                using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@email", email);
-
-                using var reader = cmd.ExecuteReader();
-
-                if (reader.Read())
-                {
-                    var usuario = new Usuario
-                    {
-                        Id = Convert.ToInt32(reader["id"].ToString()),
-                        Nome = reader["nome"].ToString(),
-                        Cpf = reader["cpf"].ToString(),
-                        Email = reader["email"].ToString(),
-                        SenhaHash = reader["senha"].ToString(),
-                        DataNascimento = DateTime.Parse(reader["data_nascimento"].ToString())
-                    };
-                    return usuario;
-                }
-
-                return null;
-            }
-            catch (System.Exception)
-            {
-                
-                return null;
-            }
         }
 
         // Método para obter todos os usuários do banco de dados
         public List<Usuario> ObterUsuarioDoBanco()
         {
-            try
-            {
-                var usuarios = new List<Usuario>();
+            return _context.Usuarios.ToList();
 
-                using var connection = new MySqlConnection(_connectionString);
-                connection.Open();
-
-                var query = "SELECT * FROM usuario";
-
-                using var cmd = new MySqlCommand(query, connection);
-                using var reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    var usuario = new Usuario
-                    {
-                        Nome = reader["nome"].ToString(),
-                        Cpf = reader["cpf"].ToString(),
-                        Email = reader["email"].ToString(),
-                        SenhaHash = reader["senha"].ToString(),
-                        DataNascimento = DateTime.Parse(reader["data_nascimento"].ToString())
-                    };
-                    usuarios.Add(usuario);
-                }
-
-                return usuarios;
-            }
-            catch (Exception)
-            {
-                return null; // Ou lançar um erro específico se desejar
-            }
         }
 
         // Método para criar um usuário no banco
         public bool CriarUsuarioNoBanco(Usuario usuario)
         {
+            if (usuario == null) return false;
+            _context.Usuarios.Add(usuario);
+            return _context.SaveChanges() > 0;
+        }
+
+        //Método para realizar uma consulta no banco
+        public async Task<bool> TestarConexao()
+        {
+            //Abre a conexão com o banco de dados e imprime uma mensagem de sucesso ou erro
             try
             {
-                using var connection = new MySqlConnection(_connectionString);
-                connection.Open();
-
-                var query = "INSERT INTO usuario (nome, cpf, email, senha, data_nascimento) VALUES (@nome, @cpf, @email, @senha, @data_nascimento)";
-
-                using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@nome", usuario.Nome);
-                cmd.Parameters.AddWithValue("@cpf", usuario.Cpf);
-                cmd.Parameters.AddWithValue("@email", usuario.Email);
-                cmd.Parameters.AddWithValue("@senha", usuario.SenhaHash);
-                cmd.Parameters.AddWithValue("@data_nascimento", usuario.DataNascimento);
-
-                cmd.ExecuteNonQuery();
-
-                return true;
+                return await _context.Database.CanConnectAsync();
             }
             catch (Exception)
             {
                 return false;
-            }
-        }
-
-        //Método para realizar uma consulta no banco
-        public void TestarConexao(){
-            //Abre a conexão com o banco de dados e imprime uma mensagem de sucesso ou erro
-            using (var connection = new MySqlConnection(_connectionString))
-            {
-                try
-                {
-                    connection.Open();
-                    Console.WriteLine("Conexão estabelecida com sucesso");
-                }
-                catch (Exception)
-                {
-                    Console.WriteLine("Erro aoi conectar ao banco");
-                    
-                }
+                
             }
         }
       
         //Método para atualizar um usuário no banco
         public bool AtualizarUsuarioNoBanco(Usuario usuario)
         {
-            try
-            {
-                using var connection = new MySqlConnection(_connectionString);
-                connection.Open();
-                var query = "UPDATE usuario SET nome = @nome, email = @email, senha = @senha, data_nascimento = @data_nascimento WHERE cpf = @cpf";
-
-                using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@nome", usuario.Nome);
-                cmd.Parameters.AddWithValue("@cpf", usuario.Cpf);
-                cmd.Parameters.AddWithValue("@email", usuario.Email);
-                cmd.Parameters.AddWithValue("@senha", usuario.SenhaHash);
-                cmd.Parameters.AddWithValue("@data_nascimento", usuario.DataNascimento);
-
-                var rowsAffected = cmd.ExecuteNonQuery();
-
-                return rowsAffected > 0;
-
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+            if (usuario == null) return false;
+            _context.Usuarios.Update(usuario);
+            return _context.SaveChanges() > 0;
         }
 
         //Método para excluir um usuário no banco
-        public bool ExcluirUsuarioDoBanco(string cpf)
+        public bool ExcluirUsuarioDoBanco(string id)
         {
-            try
-            {
-                using var connection = new MySqlConnection(_connectionString);
-                connection.Open();
+            var usuario = _context.Usuarios.Find(id);
+            if (usuario == null) return false;
 
-                var query = "DELETE FROM usuario WHERE cpf = @cpf";
-
-                using var cmd = new MySqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@cpf", cpf);
-
-                var rowsAffected = cmd.ExecuteNonQuery();
-
-                return rowsAffected > 0;
-            }
-            catch (Exception)
-            {
-                
-                return false;
-            }
+            _context.Usuarios.Remove(usuario);
+            return _context.SaveChanges() > 0;
         }
 
 

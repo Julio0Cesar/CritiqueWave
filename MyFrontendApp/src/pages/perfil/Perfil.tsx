@@ -4,24 +4,6 @@ import styles from './Perfil.module.scss'
 
 const Perfil = () => {
 
-/* 
-
-
-    const token = localStorage.getItem("token");
-    console.log(token)
-
-    if (token) { 
-        try {
-            const response = await getUserData(token); 
-            console.log(response)
-        } catch (error) {
-            console.error("Erro ao autenticar", error);
-        }
-    } else {
-        console.error("Token não encontrado");
-    }
-    
-*/
 
 return(
     <div className={styles.container}>

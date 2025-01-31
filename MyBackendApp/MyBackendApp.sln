@@ -5,8 +5,6 @@ VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyBackendApp", "MyBackendApp.csproj", "{441E893C-D01D-4912-945D-0E6347EAF174}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyBackendAppTests", "..\MyBackendAppTests\MyBackendAppTests\MyBackendAppTests.csproj", "{724DDDEF-4F90-402F-A8C0-9AABD76F0B53}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{521B3A85-3CC0-4005-91D9-66F773EDE452}"
 	ProjectSection(SolutionItems) = preProject
 		compose.yaml = compose.yaml
@@ -22,10 +20,6 @@ Global
 		{441E893C-D01D-4912-945D-0E6347EAF174}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{441E893C-D01D-4912-945D-0E6347EAF174}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{441E893C-D01D-4912-945D-0E6347EAF174}.Release|Any CPU.Build.0 = Release|Any CPU
-		{724DDDEF-4F90-402F-A8C0-9AABD76F0B53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{724DDDEF-4F90-402F-A8C0-9AABD76F0B53}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{724DDDEF-4F90-402F-A8C0-9AABD76F0B53}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{724DDDEF-4F90-402F-A8C0-9AABD76F0B53}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

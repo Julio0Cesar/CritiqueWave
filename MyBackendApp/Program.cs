@@ -1,7 +1,11 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 using System.Text;
 using DotNetEnv;
+using MyBackendApp.Services;
+using MyBackendApp.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,12 +15,15 @@ builder.WebHost.ConfigureKestrel(options =>
 });
 
 // Dependency injection (acessa ao appsettings.json)
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddSingleton(new MyBackendApp.Services.DatabaseService(connectionString));
+builder.Services.AddScoped<DatabaseService>(); 
 
-// Testar a conexão com o banco de dados
-var databaseService = new MyBackendApp.Services.DatabaseService(connectionString);
-databaseService.TestarConexao(); // Verifica a conexão ao banco
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseMySql(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))
+    )
+);
+
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -40,7 +47,7 @@ builder.Services.AddCors(Options =>
 {
     Options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:3000")
+        policy.SetIsOriginAllowed(_ => true) //WithOrigins("http://localhost:3000")
               .AllowAnyMethod()
               .AllowAnyHeader()
               .AllowCredentials();
@@ -50,6 +57,20 @@ builder.Services.AddCors(Options =>
 builder.Services.AddControllers();
 
 var app = builder.Build();
+
+// Testar a conexão com o banco de dados
+using (var scope = app.Services.CreateScope())
+{
+    var dbService = scope.ServiceProvider.GetRequiredService<DatabaseService>();
+    if (await dbService.TestarConexao())
+    {
+        Console.WriteLine("Conectado ao banco de dados com sucesso");
+    }
+    else 
+    {
+        Console.WriteLine("Erro ao conectar ao banco de dados");
+    }
+}
 
 app.UseCors("AllowFrontend"); // Habilita o CORS (politica de segurança dos navegadores)
 app.UseHttpsRedirection(); // Habilita redirecionamento HTTP para HTTPS, se necessário
