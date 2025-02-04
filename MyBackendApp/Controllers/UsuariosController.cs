@@ -2,8 +2,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyBackendApp.Models;
 using MyBackendApp.Services;
-using MyBackendApp.Data;
-using Microsoft.EntityFrameworkCore;
 
 namespace MyBackendApp.Controllers
 {   
@@ -12,31 +10,28 @@ namespace MyBackendApp.Controllers
     [ApiController]
     public class UsuariosController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
-
-        public UsuariosController(ApplicationDbContext context)
+        // Configuração do serviço do banco
+        private readonly IConfiguration _configuration;
+        private readonly DatabaseService _databaseService;
+        public UsuariosController(IConfiguration configuration, DatabaseService databaseService)
         {
-            _context = context;
+            _configuration = configuration;
+            _databaseService = databaseService;
         }
-
-        //GET: api/usuarios
-        [HttpGet]
-        public async Task<IActionResult> ObterUsuarios()
-        {
-            var usuarios = await _context.Usuarios.ToListAsync();
-            return Ok(usuarios);
-        }
-
 
         //GET: api/usuarios/me
         [HttpGet("me")]
-        public async Task<IActionResult> ObterUsuarioPeloId()
+        public async Task<IActionResult> ObterUsuario()
         {
-            var userId = int.Parse(User.FindFirst("sub")?.Value);
-            var user = await _context.Usuarios.FindAsync(userId);
-            if (user == null) 
+            var userId = int.Parse(User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value);
+            var usuarioExistente = _databaseService.ObterUsuarioPeloId(userId);
+            
+            if (usuarioExistente == null)
+            {
                 return NotFound("Usuário não encontrado");
-            return Ok(user);
+            }
+
+            return Ok(usuarioExistente);
         }
 
         //POST: api/usuarios
@@ -44,33 +39,27 @@ namespace MyBackendApp.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> CriarUsuario([FromBody] Usuario usuario)
         {
-            if (usuario == null)
-                return BadRequest("Usuário não pode ser nulo");
-
-            var usuarioExistente = await _context.Usuarios
-                .FirstOrDefaultAsync(u => u.Cpf == usuario.Cpf || u.Email == usuario.Email);
+            var email = usuario.Email;
+            var usuarioExistente = await _databaseService.ObterUsuarioPorEmail(email);
 
             if (usuarioExistente != null)
-                return BadRequest("Já existe um usuário com o mesmo CPF ou e-mail");
+                return BadRequest("Já existe um usuário com o mesmo e-mail");
 
-            _context.Usuarios.Add(usuario);
-            await _context.SaveChangesAsync();
+            _databaseService.CriarUsuarioNoBanco(usuario);
 
-            return Ok(new { Message = "Usuário criado com sucesso", Usuario = usuario });
+            return Ok(new { Message = "Usuário criado com sucesso"});
         }
 
         //PUT: api/usuarios/atualizar-usuario
         [HttpPut("atualizar-usuario")]
         public async Task<IActionResult> AtualizarUsuario([FromBody] Usuario usuario)
         {
-            var usuarioExistente = await _context.Usuarios.FindAsync(usuario.Id);
+            var usuarioExistente = _databaseService.ObterUsuarioPeloId(usuario.Id);
 
             if (usuarioExistente == null)
                 return NotFound("Usuário não encontrado");
 
-            usuarioExistente.Nome = usuario.Nome; // Exemplo de atualização de um campo
-            _context.Usuarios.Update(usuarioExistente);
-            await _context.SaveChangesAsync();
+            _databaseService.AtualizarUsuarioNoBanco(usuario);
 
             return Ok("Usuário atualizado com sucesso!");
         }
@@ -79,13 +68,12 @@ namespace MyBackendApp.Controllers
         [HttpDelete("excluir-usuario/{id}")]
         public async Task<IActionResult> ExcluirUsuario(int id)
         {
-            var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.Id == id);
+            var usuarioExistente = _databaseService.ObterUsuarioPeloId(id);
 
-            if (usuario == null)
+            if (usuarioExistente == null)
                 return NotFound("Usuário não encontrado");
 
-            _context.Usuarios.Remove(usuario);
-            await _context.SaveChangesAsync();
+            _databaseService.ExcluirUsuarioNoBanco(id);
 
             return Ok("Usuário excluído com sucesso!");
         }

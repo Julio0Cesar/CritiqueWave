@@ -1,8 +1,24 @@
+import { useEffect, useState } from 'react';
 import Card from '../../components/card/Card'
 import { getUserData } from '../../services/getUserDataService';
 import styles from './Perfil.module.scss'
 
 const Perfil = () => {
+    const [userData, setUserData] = useState<any>(null);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token')
+        if (token) {
+            getUserData(token)
+                .then((data) => {
+                    setUserData(data)
+                })
+                .catch((err) => {
+                    console.error("Erro ao buscar usuário:", err)
+                });
+        } else {
+        }
+    }, []);
 
 
 return(
@@ -18,7 +34,7 @@ return(
                         alt="" />
                 </div>
                 <div className={styles.profileName}>
-                    <h2>Nome Usuario</h2>
+                    <h2>{userData?.nome}</h2>
                     <p>Local</p>
                 </div>
             </div>

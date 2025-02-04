@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using System.Text;
+using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using MyBackendApp.Models;
 using MyBackendApp.Services;
@@ -36,25 +36,42 @@ namespace MyBackendApp.Controllers
 
             return Ok(new { usuario, token });
         }
+        
+        // endpoint para validação do token
+        [HttpGet("validate")]
+        [Authorize]
+        public IActionResult ValidateToken()
+        {
+            // Obtém as claims do usuário autenticado
+            var claims = User.Claims.Select(c => new { c.Type, c.Value });
+            return Ok(new 
+            { 
+                Message = "Token válido", 
+                Claims = claims 
+            });
+        }
 
         private string GenerateJwtToken(Usuario usuario)
         {
             var claims = new[]
             {
-                new Claim(ClaimTypes.Name, usuario.Email),
-                new Claim(ClaimTypes.NameIdentifier, usuario.Cpf)
+                new Claim("sub", usuario.Id.ToString())
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            var keyBytes = Convert.FromBase64String(_configuration["Jwt:Key"]);
+            var key = new SymmetricSecurityKey(keyBytes);
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.UtcNow.AddHours(3),
+                expires: DateTime.UtcNow.AddHours(30),
                 signingCredentials: creds
             );
+
+    var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+    Console.WriteLine($"Token gerado: {tokenString}");
             
             return new JwtSecurityTokenHandler().WriteToken(token);
         }

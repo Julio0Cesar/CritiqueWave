@@ -1,7 +1,6 @@
 using MyBackendApp.Models;
 using MyBackendApp.Data;
 using Microsoft.EntityFrameworkCore;
-using MySql.Data.MySqlClient;
 
 namespace MyBackendApp.Services
 {
@@ -16,16 +15,9 @@ namespace MyBackendApp.Services
         }
 
         //Método para obter usuário pelo ID
-        public Usuario ObterUsuarioPeloId(string id)
+        public Usuario ObterUsuarioPeloId(int id)
         {
             return _context.Usuarios.Find(id);
-        }
-
-        //Método para verificar usuários pelo CPF ou Email
-        public Usuario ObterUsuarioPorCpfOuEmail(string cpf, string email)
-        {
-            return _context.Usuarios.FirstOrDefault(u => u.Cpf == cpf || u.Email == email);
-            
         }
 
         //Método para obter usuário pelo E-mail
@@ -35,19 +27,27 @@ namespace MyBackendApp.Services
 
         }
 
-        // Método para obter todos os usuários do banco de dados
-        public List<Usuario> ObterUsuarioDoBanco()
+        //Método para criar usuário no banco
+        public async Task<bool> CriarUsuarioNoBanco(Usuario usuario)
         {
-            return _context.Usuarios.ToList();
-
-        }
-
-        // Método para criar um usuário no banco
-        public bool CriarUsuarioNoBanco(Usuario usuario)
-        {
-            if (usuario == null) return false;
             _context.Usuarios.Add(usuario);
-            return _context.SaveChanges() > 0;
+            int resultado = await _context.SaveChangesAsync();
+
+            if (resultado <= 0) return false; 
+
+            var perfil = new Perfil
+            {
+                UsuarioId = usuario.Id, 
+                FotoPerfil = null, 
+                Sobre = null, 
+                Status = null,
+                CapaPerfil = null 
+            };
+
+            _context.Perfis.Add(perfil);
+            resultado = await _context.SaveChangesAsync();
+
+            return resultado > 0; // Retorna true se o perfil foi adicionado com sucesso
         }
 
         //Método para realizar uma consulta no banco
@@ -66,15 +66,21 @@ namespace MyBackendApp.Services
         }
       
         //Método para atualizar um usuário no banco
-        public bool AtualizarUsuarioNoBanco(Usuario usuario)
+        public async Task<bool> AtualizarUsuarioNoBanco(Usuario usuario)
         {
             if (usuario == null) return false;
+
             _context.Usuarios.Update(usuario);
-            return _context.SaveChanges() > 0;
+
+            int resultado = await _context.SaveChangesAsync();
+
+            if (resultado <= 0) return false; 
+            
+            return resultado > 0;
         }
 
         //Método para excluir um usuário no banco
-        public bool ExcluirUsuarioDoBanco(string id)
+        public async Task<bool> ExcluirUsuarioNoBanco(int id)
         {
             var usuario = _context.Usuarios.Find(id);
             if (usuario == null) return false;
@@ -83,6 +89,22 @@ namespace MyBackendApp.Services
             return _context.SaveChanges() > 0;
         }
 
+        //Método para obter perfil
+        public Perfil ObterPerfilPeloId(int usuarioId)
+        {
+            return _context.Perfis.Find(usuarioId);
+        }
 
+        public async Task<bool> AtualizarPerfilNoBnaco(Perfil perfilAtualizado)
+        {
+            _context.Perfis.Update(perfilAtualizado);
+
+            int resultado = await _context.SaveChangesAsync();
+
+            if (resultado <= 0) return false; 
+            
+            return resultado > 0;
+
+        }
     }
 }
