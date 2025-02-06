@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using MyBackendApp.Data;
-using MyBackendApp.Models;
 using MyBackendApp.Services;
+using Renci.SshNet;
+using System.IO;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+
 
 namespace MyBackendApp.Controllers
 {
@@ -22,14 +24,17 @@ namespace MyBackendApp.Controllers
             _databaseService = databaseService;
         }
 
+
+//----------------------- Requisições do perfil -----------------------
+
+
         //GET: api/perfil/me
         [HttpGet("me")]
-        [Authorize]
         public async Task<IActionResult> ObterMeuPerfil()
         {
             var usuarioId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
 
-            var perfilExistente = _databaseService.ObterPerfilPeloId(usuarioId);
+            var perfilExistente = await _databaseService.ObterPerfilPeloId(usuarioId);
 
             if (perfilExistente == null)
                 return NotFound("Perfil não encontrado");
@@ -37,25 +42,76 @@ namespace MyBackendApp.Controllers
             return Ok(perfilExistente);
         }
 
-        //POST: api/perfil/me
-        [HttpPost("me")]
-        [Authorize]
-        public async Task<IActionResult> AtualizarPerfil([FromBody] Perfil perfilAtualizado)
+        //PUT: api/perfil/me
+        [HttpPut("me")]
+        public async Task<IActionResult> AtualizarPerfil(
+            [FromForm] IFormFile? fotoPerfil,
+            [FromForm] IFormFile? capaPerfil,
+            [FromForm] string? status,
+            [FromForm] string? sobre)
         {
             var usuarioId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
 
-            var perfilExistente = _databaseService.ObterPerfilPeloId(usuarioId);
+            var perfilExistente = await _databaseService.ObterPerfilPeloId(usuarioId);
 
             if (perfilExistente == null)
                 return NotFound("Perfil não encontrado");
 
-            _databaseService.AtualizarPerfilNoBnaco(perfilAtualizado);
+            if (!string.IsNullOrEmpty(status)) perfilExistente.Status = status;
+            if (!string.IsNullOrEmpty(sobre)) perfilExistente.Sobre = sobre;
 
-            return Ok("Perfil atualizado com sucesso");
+            if (fotoPerfil != null)
+            {
+                var fotoPerfilUrl = await SalvarArquivoNoServidor(fotoPerfil, "FotosPerfil");
+                perfilExistente.FotoPerfil = fotoPerfilUrl;
+            }
+            if (capaPerfil != null)
+            {
+                var capaPerfilUrl = await SalvarArquivoNoServidor(capaPerfil, "CapaPerfil");
+                perfilExistente.CapaPerfil = capaPerfilUrl;
+            }
+
+            bool resultado = await _databaseService.AtualizarPerfilNoBanco(perfilExistente);
+
+            if (resultado)
+                return Ok("Perfil atualizado com sucesso");
+
+            return BadRequest("Erro ao atualizar perfil");
         }
 
 
+//----------------------- Métodos do perfil -----------------------
+
+
+        //Método para salvar arquivos no servidor
+        public async Task<string> SalvarArquivoNoServidor(IFormFile arquivo, string pasta)
+        {
+            string servidor = "192.168.1.11";
+            string usuario = "vboxuser";
+            string senha = "changeme";
+            string pastaRemota = $"/var/www/html/imagens/{pasta}/";
+
+            string nomeArquivo = Guid.NewGuid().ToString() + Path.GetExtension(arquivo.FileName);
+            string caminhoRemoto = pastaRemota + nomeArquivo;
+
+            using (var stream = new MemoryStream())
+            {
+                await arquivo.CopyToAsync(stream);
+                stream.Position = 0;
+
+                using (var sftp = new SftpClient(servidor, usuario, senha))
+                {
+                    sftp.Connect();
+                    if (!sftp.Exists(pastaRemota))
+                    {
+                        sftp.CreateDirectory(pastaRemota);
+                    }
+                    sftp.UploadFile(stream, caminhoRemoto);
+                    sftp.Disconnect();
+                }
+            }
+
+            return $"http://192.168.1.11/imagens/{pasta}/{nomeArquivo}";
+        }
     }
-
-
 }

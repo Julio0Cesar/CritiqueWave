@@ -21,6 +21,8 @@ namespace MyBackendApp.Controllers
             _databaseService = databaseService;
         }
 
+
+//-------------------------- Autenticação do usuário --------------------------
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserLoginDto userLogin)
         {
@@ -36,21 +38,11 @@ namespace MyBackendApp.Controllers
 
             return Ok(new { usuario, token });
         }
-        
-        // endpoint para validação do token
-        [HttpGet("validate")]
-        [Authorize]
-        public IActionResult ValidateToken()
-        {
-            // Obtém as claims do usuário autenticado
-            var claims = User.Claims.Select(c => new { c.Type, c.Value });
-            return Ok(new 
-            { 
-                Message = "Token válido", 
-                Claims = claims 
-            });
-        }
 
+
+//-------------------------- Geração e validação do token --------------------------
+
+        //Método para gerar token
         private string GenerateJwtToken(Usuario usuario)
         {
             var claims = new[]
@@ -70,10 +62,26 @@ namespace MyBackendApp.Controllers
                 signingCredentials: creds
             );
 
-    var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-    Console.WriteLine($"Token gerado: {tokenString}");
-            
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+            Console.WriteLine($"Token gerado: {tokenString}");
+
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+
+        // endpoint para validação do token
+        [HttpGet("validate")]
+        [Authorize]
+        public IActionResult ValidateToken()
+        {
+             // Obtém as claims do usuário autenticado
+             var claims = User.Claims.Select(c => new { c.Type, c.Value });
+             return Ok(new
+             {
+                 Message = "Token válido",
+                 Claims = claims
+             });
+        }
+
     }
 }

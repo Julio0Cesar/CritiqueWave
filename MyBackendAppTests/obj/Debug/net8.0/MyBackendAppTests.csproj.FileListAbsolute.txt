@@ -134,3 +134,13 @@
 /home/kintiz/Desktop/Teste/MySolution/MyBackendAppTests/obj/Debug/net8.0/MyBackendAppTests.pdb
 /home/kintiz/Desktop/Teste/MySolution/MyBackendAppTests/obj/Debug/net8.0/MyBackendAppTests.genruntimeconfig.cache
 /home/kintiz/Desktop/Teste/MySolution/MyBackendAppTests/obj/Debug/net8.0/ref/MyBackendAppTests.dll
+/home/kintiz/Desktop/Teste/MySolution/MyBackendAppTests/obj/Debug/net8.0/MyBackendAppTests.sourcelink.json
+/home/kintiz/Desktop/Teste/MySolution/MyBackendAppTests/bin/Debug/net8.0/Castle.Core.dll
+/home/kintiz/Desktop/Teste/MySolution/MyBackendAppTests/bin/Debug/net8.0/DotNetEnv.dll
+/home/kintiz/Desktop/Teste/MySolution/MyBackendAppTests/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.dll
+/home/kintiz/Desktop/Teste/MySolution/MyBackendAppTests/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.Abstractions.dll
+/home/kintiz/Desktop/Teste/MySolution/MyBackendAppTests/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.Relational.dll
+/home/kintiz/Desktop/Teste/MySolution/MyBackendAppTests/bin/Debug/net8.0/Moq.dll
+/home/kintiz/Desktop/Teste/MySolution/MyBackendAppTests/bin/Debug/net8.0/MySqlConnector.dll
+/home/kintiz/Desktop/Teste/MySolution/MyBackendAppTests/bin/Debug/net8.0/Pomelo.EntityFrameworkCore.MySql.dll
+/home/kintiz/Desktop/Teste/MySolution/MyBackendAppTests/bin/Debug/net8.0/Sprache.dll

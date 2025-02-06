@@ -222,3 +222,4 @@
 /home/kintiz/Desktop/Teste/MySolution/MyBackendApp/obj/Debug/net8.0/MyBackendApp.pdb
 /home/kintiz/Desktop/Teste/MySolution/MyBackendApp/obj/Debug/net8.0/MyBackendApp.genruntimeconfig.cache
 /home/kintiz/Desktop/Teste/MySolution/MyBackendApp/obj/Debug/net8.0/ref/MyBackendApp.dll
+/home/kintiz/Desktop/Teste/MySolution/MyBackendApp/bin/Debug/net8.0/Renci.SshNet.dll

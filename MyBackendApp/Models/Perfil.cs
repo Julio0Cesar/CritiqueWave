@@ -21,5 +21,14 @@ namespace MyBackendApp.Models
         public string? CapaPerfil {get; set;}
 
         public Usuario Usuario {get; set;}
+
+        public Perfil()
+        {
+            FotoPerfil = "https://meusite.com/imagens/default-profile.png";
+            CapaPerfil = "https://meusite.com/imagens/default-cover.jpg";
+            Status = "Novato";
+            Sobre = "Estou começando a usar o app agora!";
+        }
     }
+
 }

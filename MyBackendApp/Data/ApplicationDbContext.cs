@@ -1,3 +1,12 @@
+/*
+Mudar a migration do banco com EF:
+
+dotnet ef migrations remove
+dotnet ef database drop --force             (APAGA TUDO)
+dotnet ef migrations add NovaMigration      (escreva o que fez em "NovaMigration")
+dotnet ef database update
+*/
+
 using Microsoft.EntityFrameworkCore;
 using MyBackendApp.Models;
 

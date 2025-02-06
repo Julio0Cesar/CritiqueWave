@@ -1,10 +1,25 @@
+/*
+Header para teste:
+Content-Type  application/json
+
+body para teste: raw
+descrição do body:
+
+{
+  "Nome": "Teste",
+  "Email": "email@example.com",
+  "SenhaHash": "123456"
+}
+
+*/
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyBackendApp.Models;
 using MyBackendApp.Services;
 
 namespace MyBackendApp.Controllers
-{   
+{
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
@@ -19,13 +34,15 @@ namespace MyBackendApp.Controllers
             _databaseService = databaseService;
         }
 
+//----------------------- CRUD do uduário -----------------------
+
         //GET: api/usuarios/me
         [HttpGet("me")]
         public async Task<IActionResult> ObterUsuario()
         {
             var userId = int.Parse(User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value);
-            var usuarioExistente = _databaseService.ObterUsuarioPeloId(userId);
-            
+            var usuarioExistente = await _databaseService.ObterUsuarioPeloId(userId);
+
             if (usuarioExistente == null)
             {
                 return NotFound("Usuário não encontrado");
@@ -54,26 +71,26 @@ namespace MyBackendApp.Controllers
         [HttpPut("atualizar-usuario")]
         public async Task<IActionResult> AtualizarUsuario([FromBody] Usuario usuario)
         {
-            var usuarioExistente = _databaseService.ObterUsuarioPeloId(usuario.Id);
+            var usuarioExistente = await _databaseService.ObterUsuarioPeloId(usuario.Id);
 
             if (usuarioExistente == null)
                 return NotFound("Usuário não encontrado");
 
-            _databaseService.AtualizarUsuarioNoBanco(usuario);
+            await _databaseService.AtualizarUsuarioNoBanco(usuario);
 
             return Ok("Usuário atualizado com sucesso!");
         }
-    
+
         //DELETE: api/usuarios/excluir-usuario
         [HttpDelete("excluir-usuario/{id}")]
         public async Task<IActionResult> ExcluirUsuario(int id)
         {
-            var usuarioExistente = _databaseService.ObterUsuarioPeloId(id);
+            var usuarioExistente = await _databaseService.ObterUsuarioPeloId(id);
 
             if (usuarioExistente == null)
                 return NotFound("Usuário não encontrado");
 
-            _databaseService.ExcluirUsuarioNoBanco(id);
+            await _databaseService.ExcluirUsuarioNoBanco(id);
 
             return Ok("Usuário excluído com sucesso!");
         }
