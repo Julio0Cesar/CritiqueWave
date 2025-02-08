@@ -3,19 +3,12 @@ import Card from '../../components/card/Card'
 import { getUserData } from '../../services/getUserDataService';
 import { getUserProfile } from '../../services/getUserProfileService';
 import styles from './Perfil.module.scss'
-import EditPerfilModal from '../../components/editPerfilModal/EditPerfilModal';
+import { useNavigate } from 'react-router-dom';
 
 const Perfil = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false)
     const [userData, setUserData] = useState<any>(null)
     const [perfilData, setPerfilData] = useState<any>(null)
-
-    const openModal = () => {
-        setIsModalOpen(true)
-    }
-    const closeModal = () => {
-        setIsModalOpen(false)
-    }
+    const navigate = useNavigate()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -32,11 +25,15 @@ const Perfil = () => {
             } catch (err) {
                 console.error("Erro ao buscar dados do usuário:", err)
             }
-        };
+        }
     
         fetchData()
-    }, []);
+    }, [])
     
+    const navigateEditUser = () =>{
+        navigate("/EditarUsuario")
+    }
+
 
 return(
     <div className={styles.container}>
@@ -55,8 +52,7 @@ return(
                 </div>
             </div>
             <div className={styles.profileEditButton}>
-                <button onClick={openModal}>Editar perfil</button>
-                {isModalOpen && <EditPerfilModal />}
+                <button onClick={navigateEditUser}>Editar perfil</button>
             </div>
         </div>
         <div className={styles.profileDescription}>

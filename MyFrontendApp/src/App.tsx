@@ -9,6 +9,7 @@ import Nav from './components/navbar/Nav';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Perfil from './pages/perfil/Perfil';
 import E404 from './pages/error404/E404';
+import EditarUsuario from './pages/editarUsuario/EditarUsuario';
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
             <Route path='/CriarConta' element={user ? <Navigate to='/Perfil'/> :<CriarConta/>} />
             <Route path='/Entrar' element={user ? <Navigate to='/Perfil'/> :<Login />} />
             <Route path='/Perfil' element={user ? <Perfil />: <Navigate to='/Entrar' />} />
+            <Route path='/EditarUsuario' element={user ? <EditarUsuario/> : <Navigate to='/Entrar'/>}/>
 
             <Route path='*' element={<E404 />}/>
           </Routes>

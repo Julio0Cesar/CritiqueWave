@@ -7,7 +7,7 @@ const Nav = () => {
   const location = useLocation()
   const {user} = useAuth()
 
-  if (location.pathname === '/CriarConta' || location.pathname === '/Entrar'){
+  if (location.pathname === '/CriarConta' || location.pathname === '/Entrar' || location.pathname === '/EditarUsuario'){
     return null
   }
   

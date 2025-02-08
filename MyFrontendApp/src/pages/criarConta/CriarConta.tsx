@@ -1,7 +1,7 @@
 import styles from './CriarConta.module.scss'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { useState } from 'react';
-import { criaUser } from '../../services/criaUserService';
+import { useState } from 'react'
+import { criaUser } from '../../services/criaUserService'
 
 const CriarConta = () => {
     const [formData, setFormData] = useState({
@@ -97,7 +97,7 @@ const CriarConta = () => {
           </div>
         </form>
         </div>
-    );
+    )
 }
 
 export default CriarConta;
