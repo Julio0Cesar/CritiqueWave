@@ -144,3 +144,4 @@
 /home/kintiz/Desktop/Teste/MySolution/MyBackendAppTests/bin/Debug/net8.0/MySqlConnector.dll
 /home/kintiz/Desktop/Teste/MySolution/MyBackendAppTests/bin/Debug/net8.0/Pomelo.EntityFrameworkCore.MySql.dll
 /home/kintiz/Desktop/Teste/MySolution/MyBackendAppTests/bin/Debug/net8.0/Sprache.dll
+/home/kintiz/Desktop/Teste/MySolution/MyBackendAppTests/bin/Debug/net8.0/Renci.SshNet.dll

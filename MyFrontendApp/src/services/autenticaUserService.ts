@@ -3,8 +3,8 @@ import axiosInstance from "../config/axiosConfig"
 export const autenticaUser = async (email: string, senha: string) => {
     try {
         const response = await axiosInstance.post("auth/login", {
-            emailDTO: email,
-            senhaDTO: senha
+            EmailDTO: email,
+            SenhaHashDTO: senha
         })
         return response.data
     } catch (error: any) {

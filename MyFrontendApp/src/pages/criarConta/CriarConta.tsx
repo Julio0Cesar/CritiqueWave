@@ -6,14 +6,13 @@ import { criaUser } from '../../services/criaUserService';
 const CriarConta = () => {
     const [formData, setFormData] = useState({
         nome: '',
-        cpf: '',
+        username: '',
         email: '',
-        senha: '',
-        dataNascimento: '',
+        senha: ''
     })
     const navigate = useNavigate()
 
-    const handleChange = (e: { target: { name: any; value: any; }; }) => {
+    const handleChange = (e:any) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
             ...prevData,
@@ -22,20 +21,17 @@ const CriarConta = () => {
     }
 
     const handleSubmit = async (e: { preventDefault: () => void; }) =>{
-        e.preventDefault(); // Previne o reload da pagina
+        e.preventDefault();
         
         try {
             const response = await criaUser(
                 formData.nome, 
-                formData.cpf, 
+                formData.username, 
                 formData.email, 
-                formData.senha, 
-                formData.dataNascimento
+                formData.senha
             )
-            console.log("Usuario:", response)
-            localStorage.setItem("token", response.token);
 
-            navigate("/")
+            navigate("/Entrar")
         } catch (error) {
             console.error('Erro:', error)
         }
@@ -54,6 +50,18 @@ const CriarConta = () => {
                   required
                   placeholder='Nome'
                   value={formData.nome}
+                  onChange={handleChange}
+              />
+          </label>  
+          <label className={styles.label}>
+              <h3>Username:</h3> 
+              <input 
+                  type='text'
+                  name='username'
+                  autoComplete='off'
+                  required
+                  placeholder='Username'
+                  value={formData.username}
                   onChange={handleChange}
               />
           </label>  
@@ -80,31 +88,7 @@ const CriarConta = () => {
                   value={formData.senha}
                   onChange={handleChange}
               />
-          </label>     
-          <label className={styles.label}>
-              <h3>CPF:</h3> 
-              <input 
-                  type='text'
-                  name='cpf'
-                  autoComplete='off'
-                  required
-                  placeholder='CPF'
-                  value={formData.cpf}
-                  onChange={handleChange}
-              />
-          </label>    
-          <label className={styles.label}>
-              <h3>Data de nascimento:</h3> 
-              <input 
-                  type='date'
-                  name='dataNascimento'
-                  autoComplete='off'
-                  required
-                  placeholder='Data de nascimento'
-                  value={formData.dataNascimento}
-                  onChange={handleChange}
-              />
-          </label>
+          </label>  
           <div className={styles.footer}>
             <button type="submit">Criar Conta</button>
             <div className={styles.br}>

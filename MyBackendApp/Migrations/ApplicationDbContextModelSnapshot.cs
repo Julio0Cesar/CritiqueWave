@@ -29,9 +29,6 @@ namespace MyBackendApp.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("CapaPerfil")
-                        .HasColumnType("longtext");
-
                     b.Property<string>("FotoPerfil")
                         .HasColumnType("longtext");
 
@@ -73,6 +70,10 @@ namespace MyBackendApp.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("SenhaHash")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("longtext");
 

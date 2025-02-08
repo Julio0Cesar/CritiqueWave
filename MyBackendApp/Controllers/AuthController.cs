@@ -23,6 +23,7 @@ namespace MyBackendApp.Controllers
 
 
 //-------------------------- Autenticação do usuário --------------------------
+        //POST: auth/login
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserLoginDto userLogin)
         {
@@ -31,14 +32,13 @@ namespace MyBackendApp.Controllers
             if (usuario == null)
                 return Unauthorized(new { Message = "Usuário não encontrado" });
 
-            if (usuario.SenhaHash != userLogin.SenhaDTO)
+            if (usuario.SenhaHash != userLogin.SenhaHashDTO)
                 return Unauthorized(new { Message = "Credenciais inválidas" });
 
             var token = GenerateJwtToken(usuario);
 
             return Ok(new { usuario, token });
         }
-
 
 //-------------------------- Geração e validação do token --------------------------
 

@@ -3,10 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using MyBackendApp.Services;
 using Renci.SshNet;
-using System.IO;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-
 
 namespace MyBackendApp.Controllers
 {
@@ -46,7 +42,6 @@ namespace MyBackendApp.Controllers
         [HttpPut("me")]
         public async Task<IActionResult> AtualizarPerfil(
             [FromForm] IFormFile? fotoPerfil,
-            [FromForm] IFormFile? capaPerfil,
             [FromForm] string? status,
             [FromForm] string? sobre)
         {
@@ -64,11 +59,6 @@ namespace MyBackendApp.Controllers
             {
                 var fotoPerfilUrl = await SalvarArquivoNoServidor(fotoPerfil, "FotosPerfil");
                 perfilExistente.FotoPerfil = fotoPerfilUrl;
-            }
-            if (capaPerfil != null)
-            {
-                var capaPerfilUrl = await SalvarArquivoNoServidor(capaPerfil, "CapaPerfil");
-                perfilExistente.CapaPerfil = capaPerfilUrl;
             }
 
             bool resultado = await _databaseService.AtualizarPerfilNoBanco(perfilExistente);

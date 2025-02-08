@@ -1,11 +1,15 @@
 import axiosInstance from "../config/axiosConfig";
 
-export const getUserProfile = async (userId: string) => {
+export const getUserProfile = async (token: string) => {
     try {
-        const response = await axiosInstance.get(`usuarios/${userId}`)
+        const response = await axiosInstance.get(`perfil/me`,{
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        })
         return response.data
     } catch (error: any) {
         console.error("Erro:", error.response?.data?.message || error.message)
-        error
+        throw error
     }
 }

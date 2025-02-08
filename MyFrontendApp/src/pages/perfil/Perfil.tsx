@@ -1,46 +1,62 @@
 import { useEffect, useState } from 'react';
 import Card from '../../components/card/Card'
 import { getUserData } from '../../services/getUserDataService';
+import { getUserProfile } from '../../services/getUserProfileService';
 import styles from './Perfil.module.scss'
+import EditPerfilModal from '../../components/editPerfilModal/EditPerfilModal';
 
 const Perfil = () => {
-    const [userData, setUserData] = useState<any>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [userData, setUserData] = useState<any>(null)
+    const [perfilData, setPerfilData] = useState<any>(null)
+
+    const openModal = () => {
+        setIsModalOpen(true)
+    }
+    const closeModal = () => {
+        setIsModalOpen(false)
+    }
 
     useEffect(() => {
-        const token = localStorage.getItem('token')
-        if (token) {
-            getUserData(token)
-                .then((data) => {
-                    setUserData(data)
-                })
-                .catch((err) => {
-                    console.error("Erro ao buscar usuário:", err)
-                });
-        } else {
-        }
+        const fetchData = async () => {
+            const token = localStorage.getItem('token')
+            if (!token) return
+    
+            try {
+                const [user, profile] = await Promise.all([
+                    getUserData(token),
+                    getUserProfile(token)
+                ])
+                setUserData(user)
+                setPerfilData(profile)
+            } catch (err) {
+                console.error("Erro ao buscar dados do usuário:", err)
+            }
+        };
+    
+        fetchData()
     }, []);
-
+    
 
 return(
     <div className={styles.container}>
         <div className={styles.profileHeader}>
             <div className={styles.profileBackground}>
-                
             </div>
             <div className={styles.profileInfo}>
                 <div className={styles.profileImage}>
                     <img 
-                        src="https://images.unsplash.com/photo-1482877346909-048fb6477632?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=958&q=80" 
+                        src={perfilData?.fotoPerfil}
                         alt="" />
                 </div>
                 <div className={styles.profileName}>
-                    <h2>{userData?.nome}</h2>
-                    <p>Local</p>
+                    <h2>{userData?.username || 'Nome não disponível'}</h2>
+                    <p>{perfilData?.status || 'Status não disponível'}</p>
                 </div>
             </div>
             <div className={styles.profileEditButton}>
-                <button>Editar perfil</button>
-
+                <button onClick={openModal}>Editar perfil</button>
+                {isModalOpen && <EditPerfilModal />}
             </div>
         </div>
         <div className={styles.profileDescription}>
@@ -61,16 +77,16 @@ return(
                 </div>
             </div>
         </div>
-        <div className={styles.profileAbout}>
+        <div className={styles.profileSobre}>
             <h3>Sobre</h3>
             <div className={styles.sobre}>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae corporis pariatur doloremque ipsam placeat facilis, aspernatur excepturi sapiente, temporibus eum culpa cum commodi ipsum animi illo optio incidunt iure hic.</p>
+                <p>{perfilData?.sobre || 'Informações sobre o perfil não disponíveis'}</p>
             </div>
         </div>
         <div className={styles.profilePosts}>
             <h3>Postagens Recentes</h3>
             <div className={styles.profileCards}>
-                <Card/>
+                <Card/> <Card/> <Card/> <Card/> <Card/> <Card/>
             </div>
 
         </div>

@@ -19,14 +19,12 @@ const Login = () => {
     try {
       const response = await autenticaUser(formData.email, formData.senha)
       storeToken(response.token)
-      console.log(response.token)
+
       navigate("/");
-      
     } catch (error) {
       console.error("Erro ao autenticar", error)
     }
   }
-
 
   const handleChange = (e: {target: {name:any; value:any;}}) =>{
     const {name,value} = e.target

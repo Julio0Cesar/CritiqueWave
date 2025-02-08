@@ -62,35 +62,47 @@ namespace MyBackendApp.Controllers
             if (usuarioExistente != null)
                 return BadRequest("Já existe um usuário com o mesmo e-mail");
 
-            _databaseService.CriarUsuarioNoBanco(usuario);
+            var sucesso = await _databaseService.CriarUsuarioNoBanco(usuario);
+            
+            if (!sucesso)
+                return StatusCode(500, "Erro ao criar usuário no banco de dados");
 
             return Ok(new { Message = "Usuário criado com sucesso"});
         }
 
         //PUT: api/usuarios/atualizar-usuario
         [HttpPut("atualizar-usuario")]
-        public async Task<IActionResult> AtualizarUsuario([FromBody] Usuario usuario)
+        public async Task<IActionResult> AtualizarUsuario([FromBody] Usuario usuarioAtualizado)
         {
-            var usuarioExistente = await _databaseService.ObterUsuarioPeloId(usuario.Id);
+            var userId = int.Parse(User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value);
+            var usuarioExistente = await _databaseService.ObterUsuarioPeloId(userId);
 
             if (usuarioExistente == null)
                 return NotFound("Usuário não encontrado");
 
-            await _databaseService.AtualizarUsuarioNoBanco(usuario);
+            usuarioExistente.Nome = usuarioAtualizado.Nome;
+            usuarioExistente.Username = usuarioAtualizado.Username;
+            usuarioExistente.Email = usuarioAtualizado.Email;
+            usuarioExistente.SenhaHash = usuarioAtualizado.SenhaHash;
+
+            await _databaseService.AtualizarUsuarioNoBanco(usuarioExistente);
 
             return Ok("Usuário atualizado com sucesso!");
         }
 
         //DELETE: api/usuarios/excluir-usuario
-        [HttpDelete("excluir-usuario/{id}")]
-        public async Task<IActionResult> ExcluirUsuario(int id)
+        [HttpDelete("excluir-usuario")]
+        public async Task<IActionResult> ExcluirUsuario()
         {
-            var usuarioExistente = await _databaseService.ObterUsuarioPeloId(id);
+            var userId = int.Parse(User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value);
+            var usuarioExistente = await _databaseService.ObterUsuarioPeloId(userId);
 
             if (usuarioExistente == null)
+            {
                 return NotFound("Usuário não encontrado");
+            }
 
-            await _databaseService.ExcluirUsuarioNoBanco(id);
+            await _databaseService.ExcluirUsuarioNoBanco(userId);
 
             return Ok("Usuário excluído com sucesso!");
         }

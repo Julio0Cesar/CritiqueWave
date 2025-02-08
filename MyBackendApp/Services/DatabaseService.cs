@@ -20,13 +20,17 @@ namespace MyBackendApp.Services
         //Método para obter usuário pelo ID
         public virtual async Task<Usuario> ObterUsuarioPeloId(int id)
         {
-            return await _context.Usuarios.FindAsync(id);
+            return await _context.Usuarios
+            .Include(u => u.Perfil)
+            .FirstOrDefaultAsync(u => u.Id == id);
         }
 
         //Método para obter usuário pelo E-mail
         public virtual async Task<Usuario> ObterUsuarioPorEmail(string email)
         {
-            return await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == email);
+            return await _context.Usuarios
+            .Include(u => u.Perfil)
+            .FirstOrDefaultAsync(u => u.Email == email);
 
         }
 
@@ -40,11 +44,7 @@ namespace MyBackendApp.Services
 
             var perfil = new Perfil
             {
-                UsuarioId = usuario.Id,
-                FotoPerfil = null,
-                Sobre = null,
-                Status = null,
-                CapaPerfil = null
+                UsuarioId = usuario.Id
             };
 
             _context.Perfis.Add(perfil);
@@ -58,11 +58,9 @@ namespace MyBackendApp.Services
         {
             if (usuario == null) return false;
 
-            _context.Usuarios.Update(usuario);
+            _context.Entry(usuario).State = EntityState.Modified;
 
             int resultado = await _context.SaveChangesAsync();
-
-            if (resultado <= 0) return false;
 
             return resultado > 0;
         }
@@ -102,37 +100,6 @@ namespace MyBackendApp.Services
 
         }
 
-        //Método para salvar arquivos no servidor
-        public async Task<string> SalvarArquivo(IFormFile arquivo, string pasta)
-        {
-            // Diretório de armazenamento das imagens
-            var diretórioDeArmazenamento = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", pasta);
-
-            // Cria a pasta caso ela não exista
-            if (!Directory.Exists(diretórioDeArmazenamento))
-            {
-                Directory.CreateDirectory(diretórioDeArmazenamento);
-            }
-
-            // Gera um nome único para o arquivo
-            var nomeArquivo = Guid.NewGuid().ToString() + Path.GetExtension(arquivo.FileName);
-            var caminhoArquivo = Path.Combine(diretórioDeArmazenamento, nomeArquivo);
-
-            // Salva o arquivo fisicamente
-            using (var stream = new FileStream(caminhoArquivo, FileMode.Create))
-            {
-                await arquivo.CopyToAsync(stream);
-            }
-
-            // Retorna o caminho público do arquivo wwwroot/uploads/FotosPerfil ou CapaPerfil
-            return $"/uploads/{pasta}/{nomeArquivo}";
-        }
-
-        //Método para acessar o método SalvarArquivos fora do Service
-        public virtual async Task<string> SalvarArquivoExterno(IFormFile arquivo, string pasta)
-        {
-            return await SalvarArquivo(arquivo, pasta);
-        }
 
 //------------------------ Consultas adicionais no banco ------------------------
 
