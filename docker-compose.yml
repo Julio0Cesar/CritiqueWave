@@ -1,21 +1,95 @@
+# Iniciando o projeto docker-compose:
+#
+# docker-compose up --build
+#
+#----------------------------------------
+#
+# Verificando os containers:
+#
+# docker ps -a
+#
+# docker-compose ps
+#
+#----------------------------------------
+#
+# Acessando o container:
+#
+# docker exec -it <CONTAINER_ID ou NOME> sh
+#
+# docker-compose exec <nome_do_serviço> sh
+#
+#----------------------------------------
+#
+# Reinicie o container:
+#
+# docker stop <CONTAINER_ID ou NOME>
+# docker start <CONTAINER_ID ou NOME>
+# docker restart <CONTAINER_ID ou NOME>
+#
+# docker-compose stop <nome_do_serviço>
+# docker-compose start <nome_do_serviço>
+# docker-compose restart                     (Reinicia todos)
+#
+#----------------------------------------
+#
+# Removendo containers:
+# 
+# docker rm <CONTAINER_ID ou NOME>
+# docker container prune                     (Remove todos parados de uma vez)
+#
+# docker-compose rm <nome_do_serviço>
+# docker-compose down                        (Remove todos os containers parados)
+#
+#----------------------------------------
+#
+# Removendo imagens
+#
+# docker rmi <IMAGE_ID>
+# docker rmi -f <IMAGE_ID>            (Forçando a remoção)
+#
+# docker-compose down --rmi all
+#
+#----------------------------------------
+#
+# Apagando tudo do docker
+#
+# docker rm -f $(docker ps -aq)             (Remove todos os containers ativos e parados)
+# docker system prune -a --volumes          (Apaga todas as imagens, redes, volumes parados)
+#
+# docker-compose down --volumes --rmi all   (Apaga todas as imagens, redes, volumes parados)
+#
+
 services:
   backend:
     build:
-      context: ./MyBackendApp
+      context: .
+      dockerfile: MyBackendApp/Dockerfile
     container_name: my-backend-app
     ports:
       - "5218:5218"
+    volumes:
+      - ./MyBackendApp:/app:delegated
+      - ./MyBackendApp/out:/app/out
     networks:
       - app-network
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    command: [ "dotnet", "watch", "run"]
 
   frontend:
     build:
-      context: ./MyFrontendApp
+      context: .
+      dockerfile: MyFrontendApp/Dockerfile
     container_name: my-frontend-app
     ports:
-      - "3000:80"
+      - "3000:3000"
+    volumes:
+      - ./MyFrontendApp:/app
     networks:
       - app-network
+    depends_on:
+      - backend
+    command: [ "npm", "start"]
 
 networks:
   app-network:

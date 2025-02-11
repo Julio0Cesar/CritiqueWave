@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/home/kintiz/Desktop/Teste/MySolution/MyBackendApp/MyBackendApp.csproj": {}
+    "/app/MyBackendApp.csproj": {}
   },
   "projects": {
-    "/home/kintiz/Desktop/Teste/MySolution/MyBackendApp/MyBackendApp.csproj": {
+    "/app/MyBackendApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/kintiz/Desktop/Teste/MySolution/MyBackendApp/MyBackendApp.csproj",
+        "projectUniqueName": "/app/MyBackendApp.csproj",
         "projectName": "MyBackendApp",
-        "projectPath": "/home/kintiz/Desktop/Teste/MySolution/MyBackendApp/MyBackendApp.csproj",
-        "packagesPath": "/home/kintiz/.nuget/packages/",
-        "outputPath": "/home/kintiz/Desktop/Teste/MySolution/MyBackendApp/obj/",
+        "projectPath": "/app/MyBackendApp.csproj",
+        "packagesPath": "/root/.nuget/packages/",
+        "outputPath": "/app/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/kintiz/.nuget/NuGet/NuGet.Config"
+          "/root/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -32,6 +32,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -108,7 +113,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.112/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.405/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
