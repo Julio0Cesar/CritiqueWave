@@ -1,0 +1,162 @@
+[33mcommit 593c59bab855556b605bc4036716a4f8a23b6b88[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Merge: 9a8d0c5e 8475e195
+Author: Julio0Cesar <juliocesar70777077@gmail.com>
+Date:   Mon Feb 10 21:46:44 2025 -0300
+
+    Merge branch 'master' of https://github.com/Julio0Cesar/CritiqueWave
+
+[33mcommit 9a8d0c5e212307dda18e8eaa00b8a80047f40c48[m
+Author: Julio0Cesar <juliocesar70777077@gmail.com>
+Date:   Mon Feb 10 21:45:01 2025 -0300
+
+    testando e atualizando docker-compose
+
+[33mcommit 8475e195f5a293b4352d8a5ea0b55c59d66f275a[m
+Author: Julio0Cesar <juliocesar70777077@gmail.com>
+Date:   Mon Feb 10 21:33:52 2025 -0300
+
+    testando e atualizando docker-compose
+
+[33mcommit 29e3556678a3e2ae26d1b61a5ab60a7cc7e0e2b9[m
+Author: Kintiz <juliocesar70777077@gmail.com>
+Date:   Sat Feb 8 12:46:24 2025 -0300
+
+    atualizualizando pagina de editar perfil
+
+[33mcommit e0d3b6fc9dab8b986fd834a87d9b318c751848ec[m
+Author: Kintiz <juliocesar70777077@gmail.com>
+Date:   Sat Feb 8 00:29:31 2025 -0300
+
+    Atualizando uma porrada de coisa ai
+
+[33mcommit 9170cf0cadc7dcc3b419e0d9924f0d50d086f6cf[m
+Author: Kintiz <juliocesar70777077@gmail.com>
+Date:   Thu Feb 6 16:55:00 2025 -0300
+
+    adicionando testes unitarios automaticos dos controllers
+
+[33mcommit 353c17f66d87cc6a075e074290c4a835243d8347[m
+Author: Kintiz <juliocesar70777077@gmail.com>
+Date:   Tue Feb 4 20:02:18 2025 -0300
+
+    concluindo autenticacao e requisições
+
+[33mcommit 49840dee4c2b6daf09fbacc19421c35d3a6e133a[m
+Author: Kintiz <juliocesar70777077@gmail.com>
+Date:   Fri Jan 31 16:41:36 2025 -0300
+
+    adicionando EF para o banco
+
+[33mcommit dccab9858325e58651ceed933e797ec7624a83cc[m
+Author: Kintiz <juliocesar70777077@gmail.com>
+Date:   Thu Jan 30 21:36:22 2025 -0300
+
+    adicionando perfil page
+
+[33mcommit e832b71c1f688a306734c88809d7bd310134ecb8[m
+Author: Kintiz <juliocesar70777077@gmail.com>
+Date:   Tue Jan 28 20:59:18 2025 -0300
+
+    adicionando authcontext
+
+[33mcommit f8681c4cf3c06fbf02ce3ec17d6e4166efe41d5a[m
+Author: Kintiz <juliocesar70777077@gmail.com>
+Date:   Mon Jan 27 20:50:00 2025 -0300
+
+    add context
+
+[33mcommit 7b451ffbc79b239bcc3681a9772de17abb5ce590[m
+Author: Kintiz <juliocesar70777077@gmail.com>
+Date:   Thu Jan 23 23:26:35 2025 -0300
+
+    Adiciona serviço de API para login e obtenção de dados do usuário
+    
+    - Criação do arquivo ApiService.ts para centralizar as requisições da API.
+    - Implementação das funções de login (loginUser) e busca de dados do usuário (getUserData) com fetch e axios.
+    - Atualização do componente HomePage para buscar dados do usuário logado após login e exibição das informações.
+    - Utilização do token armazenado no localStorage para autenticação nas requisições.
+
+[33mcommit 76e30be2fec660aa5211652dfac21edb9729dbbb[m
+Author: Kintiz <juliocesar70777077@gmail.com>
+Date:   Tue Jan 21 23:12:21 2025 -0300
+
+    fazendo login
+
+[33mcommit 1e2da5d0428df2c4f50c79772ac8f82f8951ad03[m
+Author: Kintiz <juliocesar70777077@gmail.com>
+Date:   Mon Jan 20 20:58:12 2025 -0300
+
+    feat: adicionar validações no modelo de usuário e melhorar o manuseio de formulários
+    
+    - Implementado  para validação no modelo de usuário.
+      - Adicionadas regras para as propriedades ,  e .
+      - Melhorado o tratamento de erros com mensagens detalhadas de validação.
+    - Simplificado o gerenciamento de estado do formulário no React com uma função dinâmica .
+      - Atualizado o manuseio de formulários para suportar múltiplos campos de forma centralizada.
+
+[33mcommit 179561e53a8cec6e1c4c5586d4ff137dca2607f0[m
+Author: Kintiz <juliocesar70777077@gmail.com>
+Date:   Mon Jan 20 20:56:52 2025 -0300
+
+    feat: adicionar validações no modelo de usuário e melhorar o manuseio de formulários
+    
+    - Implementado  para validação no modelo de usuário.
+      - Adicionadas regras para as propriedades ,  e .
+      - Melhorado o tratamento de erros com mensagens detalhadas de validação.
+    - Simplificado o gerenciamento de estado do formulário no React com uma função dinâmica .
+      - Atualizado o manuseio de formulários para suportar múltiplos campos de forma centralizada.
+
+[33mcommit cd987fc4c5d63e7f59a612ccfdba599bef76fa3d[m
+Author: Kintiz <juliocesar70777077@gmail.com>
+Date:   Sun Jan 19 20:44:10 2025 -0300
+
+    atualização da pagina de Criar Usuário
+
+[33mcommit 8620bfe6ee432ead6293403eccf35e3c1451f61f[m
+Author: Kintiz <juliocesar70777077@gmail.com>
+Date:   Sat Jan 18 21:10:30 2025 -0300
+
+        Adjust Docker configuration for frontend
+    
+        - Updated docker-compose.yml to map port 80 of the frontend container to port 3000 on the host.
+        - Kept default Nginx configuration with port 80 in the Dockerfile, avoiding manual changes every time.
+        - Ensured frontend app is accessible via localhost:3000 without modifying Nginx settings.
+    
+        This change allows for a cleaner and more consistent setup without requiring manual Nginx configuration adjustments.
+
+[33mcommit 52988a347394f00557dd45c25ea53cdf26cd4db9[m
+Author: Kintiz <juliocesar70777077@gmail.com>
+Date:   Fri Jan 17 21:04:56 2025 -0300
+
+    Implementação do cadastro de usuário no frontend e backend
+    
+    - Criado formulário de login com campos nome, email, senha, CPF e data de nascimento no frontend (React).
+    - Configurada requisição POST no frontend para enviar dados do formulário para a API backend.
+    - Implementado método de teste de conexão ao banco de dados MySQL no backend.
+    - Corrigida configuração de string de conexão ao banco de dados no appsettings.json.
+    - Testado cadastro de usuário com sucesso, validado tanto no frontend quanto no Postman.
+    
+    Pronto para deploy.
+
+[33mcommit d5654e68c5257c38e8ae0be857c3e11a3a79d9a5[m
+Author: Kintiz <juliocesar70777077@gmail.com>
+Date:   Thu Jan 16 19:47:25 2025 -0300
+
+    Adiciona Docker e configurações iniciais no projeto
+    
+    - Adicionado Dockerfile para backend (C#) e frontend (React).
+    - Criado arquivo requirements.md com dependências do projeto.
+    - Adicionado script setup.sh para facilitar a configuração.
+    - Inclusão do arquivo .editorconfig para padronização do código.
+
+[33mcommit 994ed57647b15de818a088ab719bf02c74cfd699[m
+Author: Kintiz <juliocesar70777077@gmail.com>
+Date:   Wed Jan 15 20:30:52 2025 -0300
+
+    Initial commit: MySolution setup
+
+[33mcommit c453e3a579b5ff60fd7d951258c09ee24f2dca66[m
+Author: Kintiz <juliocesar70777077@gmail.com>
+Date:   Wed Jan 15 18:55:27 2025 -0300
+
+    Initial commit: MySolution setup
