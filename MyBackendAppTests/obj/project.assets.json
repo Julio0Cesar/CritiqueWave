@@ -8248,11 +8248,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/kintiz/Desktop/Teste/MySolution/MyBackendAppTests/MyBackendAppTests.csproj",
+      "projectUniqueName": "/home/kintiz/CritiqueWave/MyBackendAppTests/MyBackendAppTests.csproj",
       "projectName": "MyBackendAppTests",
-      "projectPath": "/home/kintiz/Desktop/Teste/MySolution/MyBackendAppTests/MyBackendAppTests.csproj",
+      "projectPath": "/home/kintiz/CritiqueWave/MyBackendAppTests/MyBackendAppTests.csproj",
       "packagesPath": "/home/kintiz/.nuget/packages/",
-      "outputPath": "/home/kintiz/Desktop/Teste/MySolution/MyBackendAppTests/obj/",
+      "outputPath": "/home/kintiz/CritiqueWave/MyBackendAppTests/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/kintiz/.nuget/NuGet/NuGet.Config"
@@ -8267,8 +8267,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "/home/kintiz/Desktop/Teste/MySolution/MyBackendApp/MyBackendApp.csproj": {
-              "projectPath": "/home/kintiz/Desktop/Teste/MySolution/MyBackendApp/MyBackendApp.csproj"
+            "/home/kintiz/CritiqueWave/MyBackendApp/MyBackendApp.csproj": {
+              "projectPath": "/home/kintiz/CritiqueWave/MyBackendApp/MyBackendApp.csproj"
             }
           }
         }
@@ -8277,6 +8277,11 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -8334,7 +8339,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.112/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/home/kintiz/.dotnet/sdk/8.0.404/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
