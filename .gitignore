@@ -1,0 +1,6 @@
+MyBackendApp/bin
+MyBackendApp/obj
+MyBackendAppTests/bin
+MyBackendAppTests/obj
+MyFrontendApp/node_modules
+.idea
