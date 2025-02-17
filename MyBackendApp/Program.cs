@@ -8,7 +8,7 @@ using MyBackendApp.Middleware;
 //Build
 var builder = WebApplication.CreateBuilder(args);
 
-// Escuta na porta 5218 dentro do container
+// Escuta na porta 5218
 builder.WebHost.ConfigureKestrel(options =>
 {
     options.ListenAnyIP(5218);

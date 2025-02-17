@@ -55,6 +55,7 @@
 # docker system prune -a --volumes      (Apaga todas as imagens, redes, volumes parados)
 #
 # Imagem base do Node.js
+
 FROM node:18 AS build
 
 # Diretório de trabalho

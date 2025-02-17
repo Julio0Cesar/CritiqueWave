@@ -35,44 +35,65 @@ const Login = () => {
   }
 
   return (
-    <div className={styles.container}>
-      <form onSubmit={handleLogin} className={styles.form}>
-        <h2><Link to="/"><a>Retorne</a></Link></h2>
-        <div className={styles.labels}>
-          <label htmlFor="" className={styles.label}>
-            <h3>E-mail:</h3>
-            <input 
-              type='email'
-              name='email'
-              autoComplete='on'
-              required
-              placeholder='E-mail'
-              value={formData.email}
-              onChange={handleChange}
-            />
-          </label>
-          <label htmlFor="" className={styles.label}>
-            <h3>Senha:</h3>
-            <input 
-              type='password'
-              name='senha'
-              autoComplete='off'
-              required
-              placeholder='Senha'
-              value={formData.senha}
-              onChange={handleChange}
-            />
-          </label>
-        </div>   
-        <div className={styles.footer}>
-          <button type="submit">Entrar</button>
-          <div className={styles.br}>
+    <div className="container-center">
+      <form onSubmit={handleLogin}>
+        <div className="card">
+          <div className="retorne">
+            <h3><Link to="/"><a>Retorne</a></Link></h3>
           </div>
-          <p>ou crie sua conta <Link to='/CriarConta'><a>aqui</a></Link></p>
+          <div className="titulo">
+            <h3>Bem vindo!</h3>
+            <p>Acesse sua conta preenchendo as informações abaixo</p>
+          </div>
+          <div className="labels">
+            <label className="label">
+              <h4>E-mail ou Username</h4>
+              <input 
+                type='email'
+                name='email'
+                autoComplete='on'
+                required
+                placeholder='Digite seu e-mail ou username'
+                value={formData.email}
+                onChange={handleChange}
+              />
+            </label>
+            <label className="label">
+              <h4>Senha</h4>
+              <input 
+                type='password'
+                name='senha'
+                autoComplete='off'
+                required
+                placeholder='············'
+                value={formData.senha}
+                onChange={handleChange}
+              />
+            </label>
+          </div>   
+          <div className={styles.subArea}>
+            <div className={styles.forgotPassword}>
+              <p><Link to="/EsqueceuSenha"><a>Esqueceu a senha?</a></Link></p>
+            </div>
+          </div>
+          <div className="submitOrOther">
+            <div className="botao">
+            <button type="submit">Entrar</button>
+            </div>
+            <div className="otherOptions">
+              <p>Novo na plataforma?<Link to='/CriarConta'><a> Crie sua conta </a></Link></p>
+            </div>
+          </div>
+          <div className="divider">
+            <span className="dividerLine"></span><h4>ou</h4><span className="dividerLine"></span>
+          </div>
+          <div className="methods">
+            <h4>G</h4>
+          </div>
         </div>
       </form>
     </div>
   )
 }
 
-export default Login;
+export default Login

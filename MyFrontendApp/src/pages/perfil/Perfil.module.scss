@@ -1,119 +1,73 @@
 .container {
-    padding-top: 84px;
-    height: 100%;
-    width: 100%;
+    width: 100vw;
+    margin-top: -7rem;
 
     .profileHeader{
-        width: 100%;
-        height: 200px;
-        display: flex;
-        flex-direction: column;
+        height: 20rem;
         background-color: #d3d7db;
+        padding-left: 4rem;
+        padding-top: 14rem;
         .profileInfo{
             display: flex;
             align-items: center;
             justify-content: start;
-            padding-left: 40px;
-            padding-top: 70px;
-            border-radius: 4px;
-            .profileImage {
-                width: 150px;
-                height: 150px;
-                border: solid white;
-                border-radius: 4px;
-                margin: 10px;
-                img{
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
-                    border-radius: 2px;
-
-                }
-            }
+            border-radius: 6px;
             .profileName {
             }
         } 
         .profileEditButton {
-            padding-left: 40px;
-            width: 100%;
-            button{
-                width: 150px;
-                font-size: 20px;
-                height: 40px;
+            margin-top: 1rem;
+            .button{
+                width: 10rem;
+
             }
         }
     }
     .profileDescription{
         width: 100%;
-        height: 200px;
+        height: 10rem;
         display: flex;
         justify-content: end;
         align-items: center;
-        background-color: rgba(248,249,250,255);
         .profileDesc{
-            width: 40%;
-            height: 100%;
             display: flex;
-            align-items: center;
-            justify-content: end;
-            .Photos{
-                margin-right: 50px;
+            .Posts{
+                margin-right: 4rem;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                justify-content: center;
-
             }
             .Followers{
-                margin-right: 50px;
+                margin-right: 4rem;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                justify-content: center;
-
             }
             .Following{
-                margin-right: 50px;
+                margin-right: 4rem;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                justify-content: center;
-
             }
         }
     }
     .profileSobre{
-        width: 100%;
-        height: 100%;
-        padding: 50px;
-        h3{
-            padding: 20px;
-        }
+        padding: 4rem;
         .sobre{
-            background-color: rgba(248,249,250,255);
-            padding: 20px;
-            border-radius: 4px;
-            p{
-                text-align: start;
-                font-size: 20px;
-            }
+            background-color: #ffffff;
+            padding: 2rem;
+            border-radius: 6px;
         }
     }
     .profilePosts{
-        width: 100%;
-        height: 100%;
-        padding: 50px;
-        h3{
-
-        }
+        padding: 4rem;
         .profileCards{
             width: 100%;
-            height: 100%;
-            padding: 50px;
-            display: grid;  // Muda de flex para grid
-            grid-template-columns: repeat(auto-fill, minmax(800px, 1fr));  // Ajuste automático de colunas
-            gap: 20px;  // Espaço entre os cards
-            justify-items: center;  // Centraliza os itens
+            padding: 4rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(800px, 1fr));
+            gap: 20px;  
+            justify-items: center; 
 
         }
     }

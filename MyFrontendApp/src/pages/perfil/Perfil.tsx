@@ -41,23 +41,23 @@ return(
             <div className={styles.profileBackground}>
             </div>
             <div className={styles.profileInfo}>
-                <div className={styles.profileImage}>
+                <div className="profileImage">
                     <img 
                         src={perfilData?.fotoPerfil}
                         alt="" />
                 </div>
                 <div className={styles.profileName}>
-                    <h2>{userData?.username || 'Nome não disponível'}</h2>
+                    <h1>{userData?.username || 'Nome não disponível'}</h1>
                     <p>{perfilData?.status || 'Status não disponível'}</p>
                 </div>
             </div>
             <div className={styles.profileEditButton}>
-                <button onClick={navigateEditUser}>Editar perfil</button>
+                <button className={styles.button} onClick={navigateEditUser}>Editar perfil</button>
             </div>
         </div>
         <div className={styles.profileDescription}>
             <div className={styles.profileDesc}>
-                <div className={styles.Photos}>
+                <div className={styles.Posts}>
                     <strong>%</strong>
                     <p>Posts</p>
                 </div>
@@ -74,9 +74,9 @@ return(
             </div>
         </div>
         <div className={styles.profileSobre}>
-            <h3>Sobre</h3>
+            <h2>Sobre</h2>
             <div className={styles.sobre}>
-                <p>{perfilData?.sobre || 'Informações sobre o perfil não disponíveis'}</p>
+                <h3>{perfilData?.sobre || 'Informações sobre o perfil não disponíveis'}</h3>
             </div>
         </div>
         <div className={styles.profilePosts}>

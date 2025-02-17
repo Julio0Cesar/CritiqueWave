@@ -23,13 +23,3 @@ const Card = () => {
 }
 
 export default Card
-
-/*
-                <div className={styles.content}>
-                    <p className={styles.date}>Jan 1, 2020</p>
-                    <p className={styles.title}>Article Title</p>
-                    <p className={styles.likes}>200 Likes</p>
-                </div>
-
-
-*/

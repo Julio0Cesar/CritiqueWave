@@ -10,6 +10,8 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import Perfil from './pages/perfil/Perfil';
 import E404 from './pages/error404/E404';
 import EditarUsuario from './pages/editarUsuario/EditarUsuario';
+import EsqueceuSenha from './pages/esqueceuSenha/EsqueceuSenha';
+import AlterarSenha from './pages/alterarSenha/AlterarSenha';
 
 function App() {
 
@@ -25,6 +27,8 @@ function App() {
             <Route path='/Entrar' element={user ? <Navigate to='/Perfil'/> :<Login />} />
             <Route path='/Perfil' element={user ? <Perfil />: <Navigate to='/Entrar' />} />
             <Route path='/EditarUsuario' element={user ? <EditarUsuario/> : <Navigate to='/Entrar'/>}/>
+            <Route path="/EsqueceuSenha" element={user ? <Navigate to="/AlterarSenha" /> : <EsqueceuSenha />} />
+            <Route path="/AlterarSenha" element={user ? <AlterarSenha /> : <Navigate to="/EsqueceuSenha" />} />
 
             <Route path='*' element={<E404 />}/>
           </Routes>

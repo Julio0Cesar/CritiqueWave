@@ -63,7 +63,7 @@ WORKDIR /app
 
 # Copia apenas o arquivo de projeto primeiro para aproveitar cache
 #COPY MyBackendApp.csproj ./ (comando para dockerfile )
-#COPY . . (comando para docker-compose)
+#COPY MyBackendApp/MyBackendApp.csproj ./ (comando para docker-compose)
 COPY MyBackendApp/MyBackendApp.csproj ./
 RUN dotnet restore
 
