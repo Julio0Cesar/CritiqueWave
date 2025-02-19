@@ -8,11 +8,11 @@ const Card = () => {
             <div className={styles.img}>
             <div className={styles.content}>
                 <div className={styles.contentDescription}>
-                    <p className={styles.date}>Jan 1, 2020</p>
-                    <p className={styles.title}>Article Title</p>
+                    <h4 className={styles.date}>Jan 1, 2020</h4>
+                    <h3 className={styles.title}>Article Title</h3>
                 </div>
                 <div className={styles.contentLike}>
-                    <p className={styles.like}>% S2</p>
+                    <h3 className={styles.like}>% S2</h3>
 
                 </div>
             </div>

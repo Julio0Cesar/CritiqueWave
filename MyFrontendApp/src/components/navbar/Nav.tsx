@@ -3,11 +3,13 @@ import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import styles from './Nav.module.scss'
 import { useAuth } from '../../context/AuthContext';
 import LogoutModal from '../logoutModal/LogoutModal';
+import CreatePostModal from '../createPostModal/CreatePostModal';
 
 const Nav = () => {
   const location = useLocation()
   const {user} = useAuth()
-  const [showModal, setShowModal] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false)
+  const [showCreatePostModal, setShowCreatePostModal] = useState(false)
 
   if (location.pathname === '/CriarConta' 
     || location.pathname === '/Entrar' 
@@ -16,11 +18,17 @@ const Nav = () => {
     return null
   }
   const handleLogoutClick = () => {
-    setShowModal(true)
+    setShowLogoutModal(true)
+  }
+  const handleCancelLogout = () => {
+    setShowLogoutModal(false)
+  }
+  const handleCreatePostClick = () => {
+    setShowCreatePostModal(true)
   }
 
-  const handleCancel = () => {
-    setShowModal(false)
+  const handleCancelCreatePost = () => {
+    setShowCreatePostModal(false)
   }
 
 
@@ -71,20 +79,28 @@ const Nav = () => {
           <div className={styles.navListItemsSearch}>
               <ul>
                 <li>
+                  <button onClick={handleCreatePostClick}>+ Criar</button>
+                </li>
+                <li>
                   <input 
                     type="text" />
                 </li>
                 <li>
-                  <button>Pesquisar</button>
+                  <button className={styles.pesquisar}>Pesquisar</button>
                 </li>
               </ul>
           </div>
         </div>
-        {showModal && (
+        {showLogoutModal && (
         <LogoutModal
-          onCancel={handleCancel}
+          onCancel={handleCancelLogout}
         />
       )}
+      {showCreatePostModal && (
+      <CreatePostModal
+        onCancel={handleCancelCreatePost}
+      />
+    )}
       </nav>
   )
 }
