@@ -79,4 +79,4 @@ RUN dotnet build MyBackendApp/MyBackendApp.csproj -c Debug -o out
 EXPOSE 5218
 
 # Comando para rodar o backend em desenvolvimento
-CMD ["dotnet", "watch", "run"]
+CMD ["dotnet", "run"]

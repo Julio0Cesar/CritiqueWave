@@ -10,6 +10,7 @@ const Card = () => {
                 <div className={styles.contentDescription}>
                     <h4 className={styles.date}>Jan 1, 2020</h4>
                     <h3 className={styles.title}>Article Title</h3>
+                    <p className={styles.title}>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quam placeat ad optio magnam ex. Eum iure, provident eligendi et rerum odio sunt magnam nostrum magni ab illum blanditiis totam numquam.</p>
                 </div>
                 <div className={styles.contentLike}>
                     <h3 className={styles.like}>% S2</h3>
