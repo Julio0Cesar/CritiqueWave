@@ -8,13 +8,13 @@ namespace MyBackendApp.Models
     {
         [Key]
         public int Id { get; set; }
-
         [ForeignKey("Usuario")]
         public int UsuarioId { get; set; }
 
         public string? FotoPerfil { get; set; }
         public string? Sobre { get; set; }
         public string? Status { get; set; }
+        public List<Posts> Posts { get; set; }
 
         [JsonIgnore] // Evita o loop na serialização
         public Usuario Usuario { get; set; }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styles from './EditarUsuario.module.scss'
 import { Link, useNavigate } from 'react-router-dom'
 import { getUserData } from '../../services/getUserDataService'
@@ -11,7 +11,8 @@ const EditarUsuario = () => {
 
     const [userData, setUserData] = useState<any>(null)
     const [perfilData, setPerfilData] = useState<any>(null)
-    const navigate = useNavigate()
+    const navigate = useNavigate()    
+    const inputFileRef = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -38,7 +39,8 @@ const EditarUsuario = () => {
         email: "",
         sobre: "",
         status: "",
-        senha: ""
+        senha: "",
+        fotoPerfil: null as File | null
     })
     useEffect(() => {
         if (userData && perfilData) {
@@ -48,7 +50,8 @@ const EditarUsuario = () => {
                 email: userData.email || "",
                 status: perfilData.status || "",
                 sobre: perfilData.sobre || "",
-                senha: userData.senhaHash || ""
+                senha: userData.senhaHash || "",
+                fotoPerfil: perfilData.fotoPerfil || ""
             })
         }
     }, [userData, perfilData])
@@ -59,7 +62,19 @@ const EditarUsuario = () => {
             [name]: value,
         }))
     }
-
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files.length > 0) {
+            setFormData((prev) => ({
+                ...prev,
+                fotoPerfil: e.target.files![0],
+            }))
+        }
+    }
+    const handleClick = () => {
+        if (inputFileRef.current) {
+            inputFileRef.current.click();
+        }
+    }
     const handleSubmit = async (e: { preventDefault: () => void }) =>{
         e.preventDefault()
         
@@ -72,7 +87,8 @@ const EditarUsuario = () => {
             )
             await atualizarProfile(
                 formData.status,
-                formData.sobre
+                formData.sobre,
+                formData.fotoPerfil
             )
             navigate("/Perfil")
         } catch (error) {
@@ -82,7 +98,6 @@ const EditarUsuario = () => {
     const navigateHome = () =>{
         navigate("/")
     }
-
     const deletarusuario = async (e: { preventDefault: () => void }) =>{
         e.preventDefault()
 
@@ -108,8 +123,15 @@ return(
                 </div>
                 <div className={styles.atualizarFotoDePerfil}>
                     <div className='botao'>
-                        <button className={styles.button}>Atualizar foto de perfil</button>
+                        <button className={styles.button} type="button" onClick={handleClick}>Atualizar foto de perfil</button>
                     </div>
+                    <input
+                        type="file"
+                        ref={inputFileRef}
+                        style={{ display: "none" }}
+                        accept="image/jpg, image/png"
+                        onChange={handleFileChange}
+                    />
                     <p>Permitido JPG, JPEG ou PNG. Tamanho Max de 800KB</p>
                 </div>
             </div>

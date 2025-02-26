@@ -28,6 +28,8 @@ namespace MyBackendApp.Data
         // tabelas do banco
         public DbSet<Perfil> Perfis { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Posts> Posts { get; set; }
+        public DbSet<Likes> Likes { get; set; }
 
         //modelando o banco com dado nas models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -44,6 +46,20 @@ namespace MyBackendApp.Data
                 .HasOne(p => p.Usuario)
                 .WithOne(u => u.Perfil)
                 .HasForeignKey<Perfil>(p => p.UsuarioId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Posts>()
+                .ToTable("posts")
+                .HasOne(p => p.Perfil)
+                .WithMany(p => p.Posts) 
+                .HasForeignKey(p => p.PerfilId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Likes>()
+                .ToTable("likes")
+                .HasOne(l => l.Post) 
+                .WithMany(p => p.Likes)
+                .HasForeignKey(l => l.PostsId) 
                 .OnDelete(DeleteBehavior.Cascade);
 
         }
