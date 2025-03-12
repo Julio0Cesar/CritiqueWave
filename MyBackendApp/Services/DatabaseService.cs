@@ -100,6 +100,13 @@ namespace MyBackendApp.Services
 
         }
 
+using (var db = new SqlConnection("YourConnectionStringHere"))
+{
+    var users = db.Query<User>("SELECT Id, Name FROM Users");
+    foreach (var u in users) Console.WriteLine($"{u.Id} - {u.Name}");
+}
+
+
 
 //------------------------ Consultas adicionais no banco ------------------------
 
